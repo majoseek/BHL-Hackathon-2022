@@ -9,7 +9,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 @RestController
@@ -51,6 +53,13 @@ public class ProductController {
     List<ProductStockInfoDTO> getAvailableStockInfo(@RequestParam Set<Long> productIds,
                                                     @RequestParam Double userLatitude, @RequestParam Double userLongitude) {
         return productFinder.getStockAvailibity(productIds, userLatitude, userLongitude);
+    }
+
+    @GetMapping
+    List<ProductInfoDTO> getProductsByTag(@RequestParam Optional<String> tag, @RequestParam Optional<String> name) {
+        if (name.isPresent()) return productFinder.getProductsByName(name.get());
+        if (tag.isPresent()) return productFinder.getProductsByTag(tag.get());
+        return productFinder.getProducts();
     }
 
 }
