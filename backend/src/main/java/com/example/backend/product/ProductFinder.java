@@ -94,17 +94,18 @@ public class ProductFinder {
     List<ProductInfoDTO> getProductsByTag(String providedTag) {
         return new JPAQuery<>(entityManager).from(product)
                 .join(product.tags, tag)
-                .join(product.availableProducts, availableProduct)
-                .where(tag.name.eq(providedTag))
-                .select(constructor(ProductInfoDTO.class, product.id, product.name, product.EANCode, product.manufacturer, product.grammage, product.imgURL, GroupBy.avg(availableProduct.priceInGr)))
+                .leftJoin(product.availableProducts, availableProduct)
+                .select(constructor(ProductInfoDTO.class, product.id, product.name, product.EANCode, product.manufacturer, product.grammage, product.imgURL, availableProduct.priceInGr.avg().intValue()))
+                .groupBy(product.id, product.name, product.EANCode, product.manufacturer, product.grammage, product.imgURL)
                 .fetch();
     }
 
     List<ProductInfoDTO> getProductsByName(String providedName) {
         return new JPAQuery<>(entityManager).from(product)
                 .where(product.name.like("%" + providedName + "%"))
-                .join(product.availableProducts, availableProduct)
-                .select(constructor(ProductInfoDTO.class, product.id, product.name, product.EANCode, product.manufacturer, product.grammage, product.imgURL, GroupBy.avg(availableProduct.priceInGr)))
+                .leftJoin(product.availableProducts, availableProduct)
+                .select(constructor(ProductInfoDTO.class, product.id, product.name, product.EANCode, product.manufacturer, product.grammage, product.imgURL, availableProduct.priceInGr.avg().intValue()))
+                .groupBy(product.id, product.name, product.EANCode, product.manufacturer, product.grammage, product.imgURL)
                 .fetch();
     }
 
