@@ -2,15 +2,14 @@ package com.example.backend.tag;
 
 import com.example.backend.product.Product;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.ManyToMany;
+import javax.persistence.*;
 import java.util.Collection;
 import java.util.List;
 
 @Entity
 public class Tag {
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private String name;
     @ManyToMany(mappedBy = "tags")

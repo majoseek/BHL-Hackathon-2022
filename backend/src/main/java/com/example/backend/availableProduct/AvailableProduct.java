@@ -9,6 +9,7 @@ import javax.persistence.*;
 public class AvailableProduct {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     @ManyToOne

@@ -9,6 +9,7 @@ import java.util.List;
 @Entity
 public class Shop {
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private String name;
     private Double longitude;
