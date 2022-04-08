@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react";
 import ProductsTable from "../../components/ProductsTable";
-import {AutoComplete, Col, Input, Row} from "antd";
+import { AutoComplete, Col, Input, Row } from "antd";
 import ProductCard from "../../components/ProductCard";
 import "./styles.css";
 import {ProductsTableDictionary} from "./table/ProductsTableDictionary";
@@ -10,12 +10,12 @@ import {StockInfoDTO} from "./table/dto/StockInfo.dto";
 import {Button} from "primereact/button";
 
 const options = [
-    {value: "Szynka konserwowa"},
-    {value: "Szynka jakaś tam"},
-    {value: "Szynka sokołów"},
-    {value: "Mleko"},
-    {value: "Jajko"},
-    {value: "Wołowina"},
+    { value: "Szynka konserwowa" },
+    { value: "Szynka jakaś tam" },
+    { value: "Szynka sokołów" },
+    { value: "Mleko" },
+    { value: "Jajko" },
+    { value: "Wołowina" },
 ];
 
 const ShoppingList = () => {
