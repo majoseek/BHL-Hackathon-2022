@@ -21,6 +21,7 @@ const options = [
 const ShoppingList = () => {
     const [productNames, setProductNames] = useState<any[]>([]);
     const [searchedText, setSearchedText] = useState<string>("");
+    const [filteredTableValue, setFilteredTableValue] = useState<string>()
 
 
     useEffect(() => {
@@ -83,11 +84,14 @@ const ShoppingList = () => {
                         }
                     >
                         <Input.Search size="large" placeholder="input here" value={searchedText}
-                                      onChange={(e) => setSearchedText(e.target.value)}/>
+                                      onChange={(e) => setSearchedText(e.target.value)}
+                                      onSearch={setFilteredTableValue}
+
+                        />
                     </AutoComplete>
                     <h1>wyszukane produkty</h1>
 
-                    <ProductsTableDictionary name={searchedText}/>
+                    <ProductsTableDictionary name={filteredTableValue}/>
                 </Col>
             </Row>
         </React.Fragment>
