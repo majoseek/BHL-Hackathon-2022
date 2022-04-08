@@ -1,9 +1,13 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
 import ProductsTable from "../../components/ProductsTable";
 import {AutoComplete, Col, Input, Row} from "antd";
 import ProductCard from "../../components/ProductCard";
 import "./styles.css";
 import {ProductsTableDictionary} from "./table/ProductsTableDictionary";
+import {get} from "../../common/http/HttpRequestService";
+import {UriBuilder} from "../../common/http/UriBuilder";
+import {StockInfoDTO} from "./table/dto/StockInfo.dto";
+import {Button} from "primereact/button";
 
 const options = [
     {value: "Szynka konserwowa"},
@@ -15,11 +19,32 @@ const options = [
 ];
 
 const ShoppingList = () => {
+    const [productNames, setProductNames] = useState<any[]>([]);
+    const [searchedText, setSearchedText] = useState<string>("");
+
+
+    useEffect(() => {
+        fetchProductInfo()
+    }, [])
+
+
+    const fetchProductInfo = async () => {
+        const productInfo: StockInfoDTO[] = await get(
+            new UriBuilder()
+                .all("products")
+                .build()
+        );
+        const productNames = productInfo.map(product => ({value: product.name}));
+        setProductNames(productNames);
+    }
+
+
     return (
         <React.Fragment>
+            <Button/>
             <Row>
                 <Col span={8}>
-                    <ProductsTable />
+                    <ProductsTable/>
                 </Col>
                 <Col span={16}>
                     <h2>Most common categories</h2>
@@ -50,18 +75,19 @@ const ShoppingList = () => {
                         />
                     </div>
                     <AutoComplete
-                        options={options}
+                        options={productNames}
                         filterOption={(inputValue, option) =>
                             option!.value
                                 .toUpperCase()
                                 .indexOf(inputValue.toUpperCase()) !== -1
                         }
                     >
-                        <Input.Search size="large" placeholder="input here"/>
+                        <Input.Search size="large" placeholder="input here" value={searchedText}
+                                      onChange={(e) => setSearchedText(e.target.value)}/>
                     </AutoComplete>
                     <h1>wyszukane produkty</h1>
 
-                    <ProductsTableDictionary/>
+                    <ProductsTableDictionary name={searchedText}/>
                 </Col>
             </Row>
         </React.Fragment>
