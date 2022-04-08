@@ -1,5 +1,7 @@
 package com.example.backend.product;
 
+import com.example.backend.AvailableProduct;
+import com.example.backend.shop.Shop;
 import com.example.backend.tag.Tag;
 
 import javax.persistence.*;
@@ -14,6 +16,9 @@ public class Product {
     private String manufacturer;
     private String EANCode;
     private String grammage;
+
+    @OneToMany(mappedBy = "product")
+    private List<AvailableProduct> availableProducts;
 
     @ManyToMany
     private List<Tag> tags;
@@ -53,6 +58,14 @@ public class Product {
         this.EANCode = EANCode;
     }
 
+    public String getGrammage() {
+        return grammage;
+    }
+
+    public void setGrammage(String grammage) {
+        this.grammage = grammage;
+    }
+
 
     @JoinTable(name = "product_tags", joinColumns = @JoinColumn(name = "products_id"), inverseJoinColumns = @JoinColumn(name = "tags_id"))
     public List<Tag> getTags() {
@@ -61,6 +74,15 @@ public class Product {
 
     public void setTags(List<Tag> tags) {
         this.tags = tags;
+    }
+
+    @JoinTable(name = "available_product", joinColumns = @JoinColumn(name = "product_id"), inverseJoinColumns = @JoinColumn(name = "shop_id"))
+    public List<AvailableProduct> getAvailableProducts() {
+        return availableProducts;
+    }
+
+    public void setAvailableProducts(List<AvailableProduct> availableProducts) {
+        this.availableProducts = availableProducts;
     }
 
 }

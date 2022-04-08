@@ -13,7 +13,7 @@ public interface ProductRepository {
     Optional<Product> findById(Long id);
     Optional<Product> findByEANCode(String eanCode);
     List<Product> findByTags(Collection<Tag> tags);
-    List<Product> findByName(String name);
+    List<Product> findByNameLike(String name);
     List<Product> findByManufacturer(String manufacturer);
 }
 
