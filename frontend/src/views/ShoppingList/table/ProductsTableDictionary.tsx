@@ -19,6 +19,9 @@ export const ProductsTableDictionary = (props: ProductsTableProps) => {
 
 
     const fetchProductInfo = async () => {
+        if (!props.name) {
+            return;
+        }
         const productInfo = await get(
             new UriBuilder()
                 .all("products")
@@ -36,13 +39,18 @@ export const ProductsTableDictionary = (props: ProductsTableProps) => {
     // @ts-ignore
     const average = arr => arr.reduce((p, c) => p + c, 0) / arr.length;
 
-    const avgStockPrice = (productInfo: StockInfoDTO) => average(productInfo.stockAvailability.map(info => info.price))
+    const avgStockPrice = (productInfo: StockInfoDTO) => {
+        if (!productInfo?.stockAvailability) {
+            return "";
+        }
+        return average(productInfo?.stockAvailability.map(info => info?.price))
+    }
 
     return (
         <div className="datatable-doc-demo">
             <DataTable value={stockInfo} responsiveLayout="scroll">
                 <Column field="name" header="Name"></Column>
-                <Column body={avgStockPrice}/>
+                <Column field="" header="Average price" body={avgStockPrice}/>
                 {/*<Column field="name" header="Name"></Column>*/}
                 {/*<Column field="category" header="Category"></Column>*/}
                 {/*<Column field="quantity" header="Quantity" body={}></Column>*/}
