@@ -27,11 +27,6 @@ public class ProductController {
         this.productRepository = productRepository;
     }
 
-    @GetMapping
-    List<ProductInfoDTO> getProducts() {
-        return productFinder.getProducts();
-    }
-
     @PostMapping
     ResponseEntity<?> createProduct(@RequestBody AddProductDTO addProductDTO) {
         try {
@@ -42,6 +37,7 @@ public class ProductController {
             product.setEANCode(addProductDTO.getEANCode());
             product.setGrammage(addProductDTO.getGrammage());
             product.setManufacturer(addProductDTO.getManufacturer());
+            product.setImgURL(addProductDTO.getImgURL());
             productRepository.save(product);
             return ResponseEntity.ok().build();
         } catch (Exception e) {
