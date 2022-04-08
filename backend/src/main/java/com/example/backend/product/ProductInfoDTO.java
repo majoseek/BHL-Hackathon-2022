@@ -2,7 +2,7 @@ package com.example.backend.product;
 
 import java.util.List;
 
-public class ProductDTO {
+public class ProductInfoDTO {
     private final Long id;
     private final String name;
     private final String EANCode;
@@ -12,7 +12,7 @@ public class ProductDTO {
     private List<StockInfo> stockAvailability;
 
     //[class java.lang.Long, class java.lang.String, class java.lang.String, class java.lang.String, class java.lang.String
-    public ProductDTO(Long id, String name, String eanCode, String manufacturer, String grammage) {
+    public ProductInfoDTO(Long id, String name, String eanCode, String manufacturer, String grammage) {
         this.id = id;
         this.name = name;
         EANCode = eanCode;
