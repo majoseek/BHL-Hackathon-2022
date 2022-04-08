@@ -16,7 +16,7 @@ public class Shop {
     private Double longitude;
     private Double latitude;
 
-    @OneToMany
+    @OneToMany(mappedBy = "shop")
     private List<AvailableProduct> products;
 
     public Shop() {

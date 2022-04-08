@@ -12,11 +12,11 @@ public class AvailableProduct {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "product", referencedColumnName = "id")
+    @JoinColumn(table="available_product", name = "product_id", referencedColumnName = "id")
     private Product product;
 
     @ManyToOne
-    @JoinColumn(name = "shop", referencedColumnName = "id")
+    @JoinColumn(table="available_product", name = "shop_id", referencedColumnName = "id")
     private Shop shop;
 
 
