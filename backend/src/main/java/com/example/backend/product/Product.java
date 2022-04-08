@@ -1,16 +1,15 @@
 package com.example.backend.product;
 
-import com.example.backend.AvailableProduct;
-import com.example.backend.shop.Shop;
+import com.example.backend.availableProduct.AvailableProduct;
 import com.example.backend.tag.Tag;
 
 import javax.persistence.*;
-import java.util.Collection;
 import java.util.List;
 
 @Entity(name = "Product")
 public class Product {
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private String name;
     private String manufacturer;
