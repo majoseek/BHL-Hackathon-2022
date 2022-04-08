@@ -1,11 +1,9 @@
 package com.example.backend.shop;
 
 
-import com.example.backend.AvailableProduct;
-import com.example.backend.product.Product;
+import com.example.backend.availableProduct.AvailableProduct;
 
 import javax.persistence.*;
-import java.util.Collection;
 import java.util.List;
 
 @Entity

@@ -1,4 +1,4 @@
-package com.example.backend;
+package com.example.backend.availableProduct;
 
 import com.example.backend.product.Product;
 import com.example.backend.shop.Shop;
