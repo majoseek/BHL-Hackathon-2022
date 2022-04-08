@@ -28,6 +28,13 @@ public class AvailableProduct {
     public AvailableProduct() {
     }
 
+    public AvailableProduct(Product product, Shop shop, Integer priceInGr, Long quantity) {
+        this.product = product;
+        this.shop = shop;
+        this.priceInGr = priceInGr;
+        this.quantity = quantity;
+    }
+
     public Long getId() {
         return id;
     }

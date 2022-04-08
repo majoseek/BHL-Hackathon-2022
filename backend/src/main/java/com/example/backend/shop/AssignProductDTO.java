@@ -2,16 +2,14 @@ package com.example.backend.shop;
 
 public class AssignProductDTO {
     private Long productId;
-    private Long shopId;
     private Integer price;
     private Long quantity;
 
     public AssignProductDTO() {
     }
 
-    public AssignProductDTO(Long productId, Long shopId, Integer price, Long quantity) {
-        this.productId = productId;
-        this.shopId = shopId;
+    public AssignProductDTO(Long productId, Integer price, Long quantity) {
+       this.productId = productId;
         this.price = price;
         this.quantity = quantity;
     }
@@ -22,14 +20,6 @@ public class AssignProductDTO {
 
     public void setProductId(Long productId) {
         this.productId = productId;
-    }
-
-    public Long getShopId() {
-        return shopId;
-    }
-
-    public void setShopId(Long shopId) {
-        this.shopId = shopId;
     }
 
     public Integer getPrice() {

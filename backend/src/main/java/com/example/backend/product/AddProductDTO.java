@@ -8,6 +8,7 @@ public class AddProductDTO {
     private String manufacturer;
     private String EANCode;
     private String grammage;
+    private String imgURL;
 
     private List<Long> tagsIds = Collections.emptyList();
 
@@ -62,4 +63,11 @@ public class AddProductDTO {
         this.tagsIds = tagsIds;
     }
 
+    public String getImgURL() {
+        return imgURL;
+    }
+
+    public void setImgURL(String imgURL) {
+        this.imgURL = imgURL;
+    }
 }

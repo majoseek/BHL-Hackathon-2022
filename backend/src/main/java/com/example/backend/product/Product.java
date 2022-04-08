@@ -15,6 +15,7 @@ public class Product {
     private String manufacturer;
     private String EANCode;
     private String grammage;
+    private String imgURL;
 
     @OneToMany(mappedBy = "product")
     private List<AvailableProduct> availableProducts;
@@ -82,6 +83,14 @@ public class Product {
 
     public void setAvailableProducts(List<AvailableProduct> availableProducts) {
         this.availableProducts = availableProducts;
+    }
+
+    public String getImgURL() {
+        return imgURL;
+    }
+
+    public void setImgURL(String imgURL) {
+        this.imgURL = imgURL;
     }
 
 }
