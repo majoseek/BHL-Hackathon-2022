@@ -21,6 +21,7 @@ import static com.example.backend.shop.QShop.shop;
 import static com.example.backend.tag.QTag.tag;
 import static com.querydsl.core.group.GroupBy.groupBy;
 import static com.querydsl.core.types.Projections.constructor;
+import static org.hibernate.criterion.Projections.avg;
 
 
 @Service
@@ -45,21 +46,21 @@ public class ProductFinder {
     }
 
     List<ProductInfoDTO> getProducts() {
-        List<ProductInfoDTO> products = new JPAQuery<>(entityManager)
+//        products.forEach(product -> {
+//            List<StockInfo> stockAvailability = new JPAQuery<>(entityManager).from(availableProduct)
+//                    .join(availableProduct.shop, shop)
+//                    .join(availableProduct.product, QProduct.product)
+//                    .where(availableProduct.product.id.eq(product.getId()))
+//                    .select(constructor(StockInfo.class, shop.id, shop.name, shop.longitude, shop.latitude, availableProduct.priceInGr, availableProduct.quantity))
+//                    .fetch();
+//            product.setStockAvailability(stockAvailability);
+//        });
+        return new JPAQuery<>(entityManager)
                 .from(product)
-                .select(constructor(ProductInfoDTO.class, product.id, product.name, product.EANCode, product.manufacturer, product.grammage, product.imgURL))
+                .leftJoin(product.availableProducts, availableProduct)
+                .select(constructor(ProductInfoDTO.class, product.id, product.name, product.EANCode, product.manufacturer, product.grammage, product.imgURL, availableProduct.priceInGr.avg().intValue()))
+                .groupBy(product.id, product.name, product.EANCode, product.manufacturer, product.grammage, product.imgURL)
                 .fetch();
-
-        products.forEach(product -> {
-            List<StockInfo> stockAvailability = new JPAQuery<>(entityManager).from(availableProduct)
-                    .join(availableProduct.shop, shop)
-                    .join(availableProduct.product, QProduct.product)
-                    .where(availableProduct.product.id.eq(product.getId()))
-                    .select(constructor(StockInfo.class, shop.id, shop.name, shop.longitude, shop.latitude, availableProduct.priceInGr, availableProduct.quantity))
-                    .fetch();
-            product.setStockAvailability(stockAvailability);
-        });
-        return products;
     }
 
     List<ProductStockInfoDTO> getStockAvailibity(Set<Long> productIds, Double userLatitude, Double userLongtitude) {
@@ -93,15 +94,17 @@ public class ProductFinder {
     List<ProductInfoDTO> getProductsByTag(String providedTag) {
         return new JPAQuery<>(entityManager).from(product)
                 .join(product.tags, tag)
+                .join(product.availableProducts, availableProduct)
                 .where(tag.name.eq(providedTag))
-                .select(constructor(ProductInfoDTO.class, product.id, product.name, product.EANCode, product.manufacturer, product.grammage, product.imgURL))
+                .select(constructor(ProductInfoDTO.class, product.id, product.name, product.EANCode, product.manufacturer, product.grammage, product.imgURL, GroupBy.avg(availableProduct.priceInGr)))
                 .fetch();
     }
 
     List<ProductInfoDTO> getProductsByName(String providedName) {
         return new JPAQuery<>(entityManager).from(product)
                 .where(product.name.like("%" + providedName + "%"))
-                .select(constructor(ProductInfoDTO.class, product.id, product.name, product.EANCode, product.manufacturer, product.grammage, product.imgURL))
+                .join(product.availableProducts, availableProduct)
+                .select(constructor(ProductInfoDTO.class, product.id, product.name, product.EANCode, product.manufacturer, product.grammage, product.imgURL, GroupBy.avg(availableProduct.priceInGr)))
                 .fetch();
     }
 
