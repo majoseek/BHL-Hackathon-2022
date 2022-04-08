@@ -8,7 +8,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.util.List;
 
-import static com.example.backend.QAvailableProduct.availableProduct;
+import static com.example.backend.availableProduct.QAvailableProduct.availableProduct;
 import static com.example.backend.product.QProduct.product;
 import static com.example.backend.shop.QShop.shop;
 
@@ -29,7 +29,7 @@ public class ProductFinder {
                     .join(availableProduct.shop, shop)
                     .join(availableProduct.product, QProduct.product)
                     .where(availableProduct.product.id.eq(product.getId()))
-                    .select(Projections.constructor(StockInfo.class, shop.id, shop.name, shop.longitude, shop.latitude, ))
+                    .select(Projections.constructor(StockInfo.class, shop.id, shop.name, shop.longitude, shop.latitude, availableProduct.priceInGr, availableProduct.quantity))
                     .fetch();
             product.setStockAvailability(stockAvailability);
         });
