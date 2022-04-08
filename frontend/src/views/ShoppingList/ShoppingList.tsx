@@ -90,9 +90,10 @@ const ShoppingList = () => {
                         />
                     </AutoComplete>
                     <h1>wyszukane produkty</h1>
-
-                    <ProductsTableDictionary name={filteredTableValue}/>
                 </Col>
+            </Row>
+            <Row>
+                <ProductsTableDictionary name={filteredTableValue}/>
             </Row>
         </React.Fragment>
     );

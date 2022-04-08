@@ -4,11 +4,11 @@ import {Column} from 'primereact/column';
 import {get} from "../../../common/http/HttpRequestService";
 import {UriBuilder} from "../../../common/http/UriBuilder";
 import {StockInfoDTO} from "./dto/StockInfo.dto";
+import {Button} from "primereact/button";
 
 interface ProductsTableProps {
     name?: string;
 }
-
 
 export const ProductsTableDictionary = (props: ProductsTableProps) => {
     const [stockInfo, setStockInfo] = useState<StockInfoDTO[]>([]);
@@ -46,11 +46,18 @@ export const ProductsTableDictionary = (props: ProductsTableProps) => {
         return average(productInfo?.stockAvailability.map(info => info?.price))
     }
 
+    const actionBodyTemplate = () => {
+        return <Button type="button" icon="pi pi-plus"/>;
+    }
+
     return (
         <div className="datatable-doc-demo">
             <DataTable value={stockInfo} responsiveLayout="scroll">
                 <Column field="name" header="Name"></Column>
                 <Column field="" header="Average price" body={avgStockPrice}/>
+                <Column headerStyle={{width: '4rem', textAlign: 'center'}}
+                        bodyStyle={{textAlign: 'center', overflow: 'visible'}} body={actionBodyTemplate}/>
+
                 {/*<Column field="name" header="Name"></Column>*/}
                 {/*<Column field="category" header="Category"></Column>*/}
                 {/*<Column field="quantity" header="Quantity" body={}></Column>*/}
