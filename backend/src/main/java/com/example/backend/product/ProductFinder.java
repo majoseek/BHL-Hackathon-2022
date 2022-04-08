@@ -3,6 +3,7 @@ package com.example.backend.product;
 import com.example.backend.shop.DistanceService;
 import com.example.backend.shop.ShopFinder;
 import com.example.backend.shop.ShopInfoDTO;
+import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQuery;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +17,7 @@ import java.util.Set;
 import static com.example.backend.availableProduct.QAvailableProduct.availableProduct;
 import static com.example.backend.product.QProduct.product;
 import static com.example.backend.shop.QShop.shop;
+import static com.example.backend.tag.QTag.tag;
 import static com.querydsl.core.group.GroupBy.groupBy;
 import static com.querydsl.core.group.GroupBy.set;
 import static com.querydsl.core.types.Projections.constructor;
@@ -44,7 +46,7 @@ public class ProductFinder {
     List<ProductInfoDTO> getProducts() {
         List<ProductInfoDTO> products = new JPAQuery<>(entityManager)
                 .from(product)
-                .select(constructor(ProductInfoDTO.class, product.id, product.name, product.EANCode, product.manufacturer, product.grammage))
+                .select(Projections.constructor(ProductInfoDTO.class, product.id, product.name, product.EANCode, product.manufacturer, product.grammage))
                 .fetch();
 
         products.forEach(product -> {
@@ -52,7 +54,7 @@ public class ProductFinder {
                     .join(availableProduct.shop, shop)
                     .join(availableProduct.product, QProduct.product)
                     .where(availableProduct.product.id.eq(product.getId()))
-                    .select(constructor(StockInfo.class, shop.id, shop.name, shop.longitude, shop.latitude, availableProduct.priceInGr, availableProduct.quantity))
+                    .select(Projections.constructor(StockInfo.class, shop.id, shop.name, shop.longitude, shop.latitude, availableProduct.priceInGr, availableProduct.quantity))
                     .fetch();
             product.setStockAvailability(stockAvailability);
         });
@@ -85,5 +87,21 @@ public class ProductFinder {
                 .transform(groupBy(shop.id).as(set(constructor(ProductInfoDTO.class, product.id, product.name, product.EANCode, product.manufacturer, product.grammage))));
     }
 
+
+
+    List<ProductInfoDTO> getProductsByTag(String providedTag) {
+        return new JPAQuery<>(entityManager).from(product)
+                .join(product.tags, tag)
+                .where(tag.name.eq(providedTag))
+                .select(Projections.constructor(ProductInfoDTO.class, product.id, product.name, product.EANCode, product.manufacturer, product.grammage))
+                .fetch();
+    }
+
+    List<ProductInfoDTO> getProductsByName(String providedName) {
+        return new JPAQuery<>(entityManager).from(product)
+                .where(product.name.like("%" + providedName + "%"))
+                .select(Projections.constructor(ProductInfoDTO.class, product.id, product.name, product.EANCode, product.manufacturer, product.grammage))
+                .fetch();
+    }
 
 }
