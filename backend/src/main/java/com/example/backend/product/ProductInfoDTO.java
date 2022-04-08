@@ -16,7 +16,7 @@ public class ProductInfoDTO {
     public ProductInfoDTO(Long id, String name, String eanCode, String manufacturer, String grammage, String imgURL) {
         this.id = id;
         this.name = name;
-        EANCode = eanCode;
+        this.EANCode = eanCode;
         this.manufacturer = manufacturer;
         this.grammage = grammage;
         this.imgURL = imgURL;
@@ -53,4 +53,5 @@ public class ProductInfoDTO {
     public String getImgURL() {
         return imgURL;
     }
+
 }
