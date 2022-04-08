@@ -17,7 +17,6 @@ public class ProductFinder {
     @PersistenceContext
     private EntityManager entityManager;
 
-
     List<ProductDTO> getProducts() {
         List<ProductDTO> products = new JPAQuery<>(entityManager)
                 .from(product)
@@ -35,5 +34,4 @@ public class ProductFinder {
         });
         return products;
     }
-
 }
