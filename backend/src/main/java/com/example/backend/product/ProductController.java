@@ -37,6 +37,7 @@ public class ProductController {
             product.setEANCode(addProductDTO.getEANCode());
             product.setGrammage(addProductDTO.getGrammage());
             product.setManufacturer(addProductDTO.getManufacturer());
+            product.setImgURL(addProductDTO.getImgURL());
             productRepository.save(product);
             return ResponseEntity.ok().build();
         } catch (Exception e) {

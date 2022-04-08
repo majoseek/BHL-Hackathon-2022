@@ -70,4 +70,5 @@ public class AddProductDTO {
     public void setImgURL(String imgURL) {
         this.imgURL = imgURL;
     }
+
 }
