@@ -1,6 +1,8 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import LandingPage from "./views/LandingPage";
 import ShoppingList from "./views/ShoppingList";
+import "./App.css";
+
 const App = () => {
     return (
         <BrowserRouter>

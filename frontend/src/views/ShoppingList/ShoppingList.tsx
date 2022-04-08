@@ -1,4 +1,11 @@
+import React from "react";
+import ProductsTable from "../../components/ProductsTable";
+
 const ShoppingList = () => {
-    return null;
+    return (
+        <React.Fragment>
+            <ProductsTable />
+        </React.Fragment>
+    );
 };
 export default ShoppingList;
