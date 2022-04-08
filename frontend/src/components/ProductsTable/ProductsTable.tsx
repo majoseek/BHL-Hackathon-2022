@@ -1,4 +1,5 @@
 import { Table } from "antd";
+import "./styles.css";
 const columns = [
     {
         title: "Name",
@@ -91,7 +92,7 @@ const ProductsTable = () => {
         <Table
             dataSource={dataSource}
             columns={columns}
-            pagination={{ pageSize: 5 }}
+            pagination={{ pageSize: 8 }}
         />
     );
 };

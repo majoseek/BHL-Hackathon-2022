@@ -1,10 +1,67 @@
 import React from "react";
 import ProductsTable from "../../components/ProductsTable";
+import { Row, Col } from "antd";
+import { AutoComplete } from "antd";
+import { Input } from "antd";
+import ProductCard from "../../components/ProductCard";
+import "./styles.css";
+const options = [
+    { value: "Szynka konserwowa" },
+    { value: "Szynka jakaś tam" },
+    { value: "Szynka sokołów" },
+    { value: "Mleko" },
+    { value: "Jajko" },
+    { value: "Wołowina" },
+];
 
 const ShoppingList = () => {
     return (
         <React.Fragment>
-            <ProductsTable />
+            <Row>
+                <Col span={8}>
+                    <ProductsTable />
+                </Col>
+                <Col span={16}>
+                    <h2>Most common categories</h2>
+                    <div className="card-holder">
+                        <ProductCard
+                            imageSource="https://images.unsplash.com/photo-1523473827533-2a64d0d36748?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=880&q=80"
+                            name="Dairy"
+                        />
+                        <ProductCard
+                            imageSource="https://images.unsplash.com/photo-1551888761-382cd30b5da6?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=880&q=80"
+                            name="Bread"
+                        />
+                        <ProductCard
+                            imageSource="https://images.unsplash.com/photo-1562166453-964fd947f2a4?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=880&q=80"
+                            name="Fruits"
+                        />
+                        <ProductCard
+                            imageSource="https://images.unsplash.com/photo-1526470303-82c787d88682?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=932&q=80"
+                            name="Vegetables"
+                        />
+                        <ProductCard
+                            imageSource="https://images.unsplash.com/photo-1603903631889-b5f3ba4d5b9b?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=880&q=80"
+                            name="Snacks"
+                        />
+                        <ProductCard
+                            imageSource="https://images.unsplash.com/photo-1632789395770-20e6f63be806?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=839&q=80"
+                            name="Drinks"
+                        />
+                    </div>
+                    <AutoComplete
+                        options={options}
+                        filterOption={(inputValue, option) =>
+                            option!.value
+                                .toUpperCase()
+                                .indexOf(inputValue.toUpperCase()) !== -1
+                        }
+                    >
+                        <Input.Search size="large" placeholder="input here" />
+                    </AutoComplete>
+                    <h1>wyszukane produkty</h1>
+                </Col>
+            </Row>
         </React.Fragment>
     );
 };

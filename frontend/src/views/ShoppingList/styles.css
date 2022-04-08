@@ -1,0 +1,13 @@
+.card-holder {
+    width: 95%;
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: 10px;
+}
+.card-holder img {
+    width: 200px;
+    height: 200px;
+}
+.card-holder div {
+    margin: 6px;
+}

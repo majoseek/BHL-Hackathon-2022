@@ -1,0 +1,19 @@
+.ant-table-wrapper {
+    height: 563px;
+    border: 2px solid black;
+    border-radius: 20px;
+    margin: 30px;
+    overflow: hidden;
+}
+.ant-pagination.ant-table-pagination.ant-table-pagination-right {
+    margin-right: 10px;
+}
+.ant-col.ant-col-16 {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 30px;
+}
+.ant-select.ant-select-auto-complete.ant-select-single.ant-select-customize-input.ant-select-show-search {
+    width: 400px;
+}
