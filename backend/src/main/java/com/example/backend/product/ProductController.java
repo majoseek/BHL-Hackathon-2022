@@ -27,11 +27,6 @@ public class ProductController {
         this.productRepository = productRepository;
     }
 
-    @GetMapping
-    List<ProductInfoDTO> getProducts() {
-        return productFinder.getProducts();
-    }
-
     @PostMapping
     ResponseEntity<?> createProduct(@RequestBody AddProductDTO addProductDTO) {
         try {
