@@ -1,17 +1,17 @@
 import React from "react";
 import ProductsTable from "../../components/ProductsTable";
-import { Row, Col } from "antd";
-import { AutoComplete } from "antd";
-import { Input } from "antd";
+import {AutoComplete, Col, Input, Row} from "antd";
 import ProductCard from "../../components/ProductCard";
 import "./styles.css";
+import {ProductsTableDictionary} from "./table/ProductsTableDictionary";
+
 const options = [
-    { value: "Szynka konserwowa" },
-    { value: "Szynka jakaś tam" },
-    { value: "Szynka sokołów" },
-    { value: "Mleko" },
-    { value: "Jajko" },
-    { value: "Wołowina" },
+    {value: "Szynka konserwowa"},
+    {value: "Szynka jakaś tam"},
+    {value: "Szynka sokołów"},
+    {value: "Mleko"},
+    {value: "Jajko"},
+    {value: "Wołowina"},
 ];
 
 const ShoppingList = () => {
@@ -57,9 +57,11 @@ const ShoppingList = () => {
                                 .indexOf(inputValue.toUpperCase()) !== -1
                         }
                     >
-                        <Input.Search size="large" placeholder="input here" />
+                        <Input.Search size="large" placeholder="input here"/>
                     </AutoComplete>
                     <h1>wyszukane produkty</h1>
+
+                    <ProductsTableDictionary/>
                 </Col>
             </Row>
         </React.Fragment>
