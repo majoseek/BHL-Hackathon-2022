@@ -19,8 +19,8 @@ public class AvailableProduct {
     @JoinColumn(table="available_product", name = "shop_id", referencedColumnName = "id")
     private Shop shop;
 
+    private Integer priceInGr;
 
-    @Column(name = "quantity")
     private Long quantity;
 
 
@@ -41,6 +41,14 @@ public class AvailableProduct {
 
     public void setProduct(Product product) {
         this.product = product;
+    }
+
+    public Integer getPriceInGr() {
+        return priceInGr;
+    }
+
+    public void setPriceInGr(Integer priceInGr) {
+        this.priceInGr = priceInGr;
     }
 
     public Long getQuantity() {
