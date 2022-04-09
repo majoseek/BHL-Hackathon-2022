@@ -1,13 +1,28 @@
 .card-holder {
-    width: 95%;
     display: flex;
     flex-wrap: wrap;
-    margin-top: 10px;
+    justify-content: space-around;
 }
 .card-holder img {
-    width: 200px;
-    height: 200px;
+    width: 140px;
+    height: 140px;
 }
-.card-holder div {
-    margin: 6px;
+.ant-card.ant-card-bordered.ant-card-hoverable {
+    margin-top: 10px;
+}
+.main-container {
+    margin-top: 60px;
+}
+.main-container div:nth-child(2) {
+    padding-top: 0;
+    text-align: center;
+}
+.p-button {
+    float: right;
+    margin-top: 25px !important;
+    background-color: #ff7f00 !important;
+    border: none !important;
+}
+.p-button span {
+    font-weight: 500;
 }

@@ -1,25 +1,25 @@
 //@ts-nocheck
-import React, {useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 import ProductsTable from "../../components/ProductsTable";
-import {AutoComplete, Col, Input, Row} from "antd";
+import { AutoComplete, Col, Input, Row } from "antd";
 import ProductCard from "../../components/ProductCard";
 import "./styles.css";
-import {ProductsTableDictionary} from "./table/ProductsTableDictionary";
-import {get} from "../../common/http/HttpRequestService";
-import {UriBuilder} from "../../common/http/UriBuilder";
-import {StockInfoDTO} from "./table/dto/StockInfo.dto";
-import {Button} from "primereact/button";
-import {ShoppingListElementDTO} from "./table/dto/ShoppingListElementDTO";
-import {ProductInfoDTO} from "./table/dto/ProductInfo.dto";
-import {useNavigate} from "react-router-dom";
+import { ProductsTableDictionary } from "./table/ProductsTableDictionary";
+import { get } from "../../common/http/HttpRequestService";
+import { UriBuilder } from "../../common/http/UriBuilder";
+import { StockInfoDTO } from "./table/dto/StockInfo.dto";
+import { Button } from "primereact/button";
+import { ShoppingListElementDTO } from "./table/dto/ShoppingListElementDTO";
+import { ProductInfoDTO } from "./table/dto/ProductInfo.dto";
+import { useNavigate } from "react-router-dom";
 
 const options = [
-    {value: "Szynka konserwowa"},
-    {value: "Szynka jakaś tam"},
-    {value: "Szynka sokołów"},
-    {value: "Mleko"},
-    {value: "Jajko"},
-    {value: "Wołowina"},
+    { value: "Szynka konserwowa" },
+    { value: "Szynka jakaś tam" },
+    { value: "Szynka sokołów" },
+    { value: "Mleko" },
+    { value: "Jajko" },
+    { value: "Wołowina" },
 ];
 
 export interface ShoppingListProps {
@@ -29,62 +29,67 @@ export interface ShoppingListProps {
 const ShoppingList = (props: ShoppingListProps) => {
     const [productNames, setProductNames] = useState<any[]>([]);
     const [searchedText, setSearchedText] = useState<string>("");
-    const [filteredTableValue, setFilteredTableValue] = useState<string>()
+    const [filteredTableValue, setFilteredTableValue] = useState<string>();
 
-    const [shoppingListElements, setShoppingListElements] = useState<ShoppingListElementDTO[]>([])
+    const [shoppingListElements, setShoppingListElements] = useState<
+        ShoppingListElementDTO[]
+    >([]);
 
     const navigate = useNavigate();
 
     const onRedirect = () => {
-        props.setSelectedProductIds(shoppingListElements.map(product => product.productId));
-        navigate('/map')
-    }
+        props.setSelectedProductIds(
+            shoppingListElements.map((product) => product.productId)
+        );
+        navigate("/map");
+    };
 
     useEffect(() => {
-        fetchProductInfo()
-    }, [])
+        fetchProductInfo();
+    }, []);
 
     const fetchProductInfo = async () => {
         const productInfo: StockInfoDTO[] = await get(
-            new UriBuilder()
-                .all("products")
-                .build()
+            new UriBuilder().all("products").build()
         );
-        const productNames = productInfo.map(product => ({value: product.name}));
+        const productNames = productInfo.map((product) => ({
+            value: product.name,
+        }));
         setProductNames(productNames);
-    }
+    };
 
     const onProductAdd = (productInfoDTO: ProductInfoDTO) => {
-        if (shoppingListElements.some(el => el.productId == productInfoDTO.id)) {
+        if (
+            shoppingListElements.some((el) => el.productId == productInfoDTO.id)
+        ) {
             return;
         }
         const shoppingListElement: ShoppingListElementDTO = {
             productName: productInfoDTO.name,
             productId: productInfoDTO.id,
-            averagePrice: productInfoDTO.averagePrice
-        }
-        setShoppingListElements([...shoppingListElements, shoppingListElement])
-    }
+            averagePrice: productInfoDTO.averagePrice,
+        };
+        setShoppingListElements([...shoppingListElements, shoppingListElement]);
+    };
 
     const onProductDelete = (toDeleteId: number) => {
         setShoppingListElements(
-            shoppingListElements.filter(id => id.productId !== toDeleteId)
+            shoppingListElements.filter((id) => id.productId !== toDeleteId)
         );
-    }
+    };
 
     // @ts-ignore
     return (
         <React.Fragment>
-            <Button/>
-            <Row>
-                <Col span={8}>
+            <Row className="main-container" gutter={8}>
+                <Col span={10}>
                     <ProductsTable
                         shoppingListElements={shoppingListElements}
                         onDeleteElement={onProductDelete}
                     />
-                    <Button label="Proceed" onClick={onRedirect}/>
+                    <Button label="Proceed" onClick={onRedirect} />
                 </Col>
-                <Col span={16}>
+                <Col span={14}>
                     <h2>Most common categories</h2>
                     <div className="card-holder">
                         <ProductCard
@@ -111,6 +116,14 @@ const ShoppingList = (props: ShoppingListProps) => {
                             imageSource="https://images.unsplash.com/photo-1632789395770-20e6f63be806?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=839&q=80"
                             name="Drinks"
                         />
+                        <ProductCard
+                            imageSource="https://images.unsplash.com/photo-1614313511387-1436a4480ebb?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=880&q=80"
+                            name="Alcohol"
+                        />
+                        <ProductCard
+                            imageSource="https://images.unsplash.com/photo-1625937329935-287441889bce?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=880&q=80"
+                            name="Meat"
+                        />
                     </div>
                     <AutoComplete
                         options={productNames}
@@ -120,21 +133,24 @@ const ShoppingList = (props: ShoppingListProps) => {
                                 .indexOf(inputValue.toUpperCase()) !== -1
                         }
                     >
-                        <Input.Search size="large" placeholder="input here" value={searchedText}
-                                      onChange={(e) => setSearchedText(e.target.value)}
-                                      onSearch={setFilteredTableValue}
-
+                        <Input.Search
+                            size="large"
+                            placeholder="input here"
+                            value={searchedText}
+                            onChange={(e) => setSearchedText(e.target.value)}
+                            onSearch={setFilteredTableValue}
                         />
                     </AutoComplete>
                     <h1>wyszukane produkty</h1>
                 </Col>
             </Row>
             <Row>
-                <ProductsTableDictionary name={filteredTableValue} onProductAdd={onProductAdd}/>
+                <ProductsTableDictionary
+                    name={filteredTableValue}
+                    onProductAdd={onProductAdd}
+                />
             </Row>
         </React.Fragment>
     );
-
-
 };
 export default ShoppingList;
