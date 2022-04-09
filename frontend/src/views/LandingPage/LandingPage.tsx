@@ -17,7 +17,7 @@ const LandingPage = () => {
             <Row className="cards-wrapper">
                 <Col className="category-landing" span={8}>
                     <div>
-                        <span>Cooking from recipe</span>
+                        <span>Cooking from recipe?</span>
                         <label>
                             Just paste part of your recipe with the ingredients.
                             We'll take care of what you need to cook it!
@@ -32,7 +32,7 @@ const LandingPage = () => {
                 <Col className="category-landing" span={8}>
                     <img src={findingBackground} alt={"MenuCard"} />
                     <div>
-                        <span>Planning a shopping</span>
+                        <span>Planning a shopping?</span>
                         <label>
                             Choose what you want to aquire. See where you'll
                             find it. We will check where you can find it quickly
@@ -47,14 +47,14 @@ const LandingPage = () => {
                 <Col className="category-landing" span={8}>
                     <img src={shoppingBackground} alt={"MenuCard"} />
                     <div>
-                        <span>Looking for product</span>
+                        <span>Looking for product?</span>
                         <label>
                             Do you need a certain thing you're not sure is
                             available at your favourite store? We'll check,
                             where is your product.
                         </label>
                         <Button
-                            label="Check availability!"
+                            label="Check availbility!"
                             className="p-button-outlined"
                         />
                     </div>
