@@ -23,7 +23,7 @@ const LandingPage = () => {
                             Just paste part of your recipe with the ingredients.
                             We'll take care of what you need to cook it!
                         </label>
-                        <Link to="/prepare" style={{ margin: "auto" }}>
+                        <Link to="/uploadRecipe" style={{ margin: "auto" }}>
                             <Button
                                 label="Let's prepare!"
                                 className="p-button-outlined"

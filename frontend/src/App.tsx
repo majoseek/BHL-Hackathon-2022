@@ -9,7 +9,7 @@ import "primeicons/primeicons.css";
 import SearchProductPage from "./views/SearchProductPage/SearchProductPage";
 import { useState } from "react";
 import { SummaryPage } from "./views/SummaryPage/SummaryPage";
-import { RecipeUploadComponent } from "./views/RecipeUpload/RecipeUpload.component"; //icons
+import RecipeUpload from "./views/RecipeUpload/RecipeUpload";
 
 const App = () => {
     const [selectedProductsIDs, setSelectedProductIds] = useState<number[]>([]);
@@ -32,10 +32,7 @@ const App = () => {
                     element={<SummaryPage productIds={selectedProductsIDs} />}
                 />
                 <Route path="/availbility" element={<SearchProductPage />} />
-                <Route
-                    path="/uploadRecipe"
-                    element={<RecipeUploadComponent />}
-                />
+                <Route path="/uploadRecipe" element={<RecipeUpload />} />
             </Routes>
         </BrowserRouter>
     );

@@ -7,4 +7,5 @@ export interface ProductStockInfoDTO {
     availableProducts: ProductInfoDTO[];
     optimalParamValue: number;
     markerColor?: string;
+    unavailableProducts: number;
 }
