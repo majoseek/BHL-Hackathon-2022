@@ -58,7 +58,7 @@ public class ProductController {
     @GetMapping
     List<ProductInfoDTO> getProductsByTag(@RequestParam Optional<String> tag, @RequestParam Optional<String> name) {
         if (name.isEmpty() && tag.isEmpty()) return productFinder.getProducts();
-        return productFinder.getProductsByNameOrTag(name.orElse(""), tag.orElse(""));
+        return productFinder.getProductsByNameOrTag(name, tag);
     }
 
 
