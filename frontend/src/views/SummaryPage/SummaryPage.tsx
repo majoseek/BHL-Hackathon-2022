@@ -1,6 +1,6 @@
 //@ts-nocheck
 import { get } from "../../common/http/HttpRequestService";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { ProductStockInfoDTO } from "./dto/ProductStockInfo.dto";
 import { DataTable, DataTableRowClickEventParams } from "primereact/datatable";
 import { Column } from "primereact/column";
@@ -8,6 +8,7 @@ import { Map, Marker } from "pigeon-maps";
 import { useNavigate } from "react-router-dom";
 import { ShopInfoDTO } from "./dto/ShopInfoDTO";
 import { Slider, SliderChangeParams } from "primereact/slider";
+import "./styles.css";
 
 export interface SummaryPageProps {
     productIds: number[];
@@ -41,7 +42,7 @@ export const SummaryPage = (props: SummaryPageProps) => {
         timeout: 5000,
         maximumAge: 0,
     };
-
+    const [shopsQuantity, setShopsQuantity] = useState(0);
     const loadSummary = () => {
         navigator.geolocation.getCurrentPosition(
             async (position: GeolocationPosition) => {
@@ -60,6 +61,7 @@ export const SummaryPage = (props: SummaryPageProps) => {
                         obj2.optimalParamValue - obj1.optimalParamValue
                 );
                 setProductStockInfos(data);
+                setShopsQuantity(data.length);
                 console.log(data);
             },
             () => {},
@@ -86,9 +88,14 @@ export const SummaryPage = (props: SummaryPageProps) => {
         <>
             <div className={"p-grid"}>
                 <div className={"p-col-6"}>
+                    <h2>
+                        {shopsQuantity === 0
+                            ? "We didn't find shops, that may interest you."
+                            : `We found ${shopsQuantity} shops that may interest you!`}
+                    </h2>
                     {geolocationCoordinates && (
                         <Map
-                            height={300}
+                            height={600}
                             // @ts-ignore
                             center={[latitude, 1]}
                             defaultCenter={[
@@ -125,7 +132,7 @@ export const SummaryPage = (props: SummaryPageProps) => {
                             )}
                         </Map>
                     )}
-                    ){/* @ts-ignore */}
+                    {/* @ts-ignore */}
                 </div>
                 <div className={"p-col-6"}>
                     <DataTable
@@ -165,6 +172,19 @@ export const SummaryPage = (props: SummaryPageProps) => {
                         }}
                     />
                 </div>
+            </div>
+            <div className="custom-shape-divider-bottom-1649482509">
+                <svg
+                    data-name="Layer 1"
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 1200 120"
+                    preserveAspectRatio="none"
+                >
+                    <path
+                        d="M985.66,92.83C906.67,72,823.78,31,743.84,14.19c-82.26-17.34-168.06-16.33-250.45.39-57.84,11.73-114,31.07-172,41.86A600.21,600.21,0,0,1,0,27.35V120H1200V95.8C1132.19,118.92,1055.71,111.31,985.66,92.83Z"
+                        className="shape-fill"
+                    ></path>
+                </svg>
             </div>
         </>
     );
