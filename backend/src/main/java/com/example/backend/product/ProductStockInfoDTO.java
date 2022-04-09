@@ -7,12 +7,14 @@ import java.util.Set;
 public class ProductStockInfoDTO {
     private final ShopInfoDTO shopInfoDTO;
     private final double distance;
-    private final Set<ProductInfoDTO> availableProducts;
+    private final Set<StockInfo> availableProducts;
+    private final Double optimalParamValue;
 
-    public ProductStockInfoDTO(ShopInfoDTO shopInfoDTO, double distance, Set<ProductInfoDTO> availableProducts) {
+    public ProductStockInfoDTO(ShopInfoDTO shopInfoDTO, double distance, Set<StockInfo> availableProducts, Double optimalParamValue) {
         this.shopInfoDTO = shopInfoDTO;
         this.distance = distance;
         this.availableProducts = availableProducts;
+        this.optimalParamValue = optimalParamValue;
     }
 
     public ShopInfoDTO getShopInfoDTO() {
@@ -23,7 +25,12 @@ public class ProductStockInfoDTO {
         return distance;
     }
 
-    public Set<ProductInfoDTO> getAvailableProducts() {
+
+    public Set<StockInfo> getAvailableProducts() {
         return availableProducts;
+    }
+
+    public Double getOptimalParamValue() {
+        return optimalParamValue;
     }
 }
