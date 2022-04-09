@@ -5,6 +5,7 @@ import cookingBackground from "./background_cooking_vertical.png";
 import findingBackground from "./background_finding_vertical.png";
 import shoppingBackground from "./background_shopping_vertical.png";
 import { Button } from "primereact/button";
+import { Link } from "react-router-dom";
 const LandingPage = () => {
     return (
         <>
@@ -22,10 +23,12 @@ const LandingPage = () => {
                             Just paste part of your recipe with the ingredients.
                             We'll take care of what you need to cook it!
                         </label>
-                        <Button
-                            label="Let's prepare!"
-                            className="p-button-outlined"
-                        />
+                        <Link to="/prepare" style={{ margin: "auto" }}>
+                            <Button
+                                label="Let's prepare!"
+                                className="p-button-outlined"
+                            />
+                        </Link>
                     </div>
                     <img src={cookingBackground} alt={"MenuCard"} />
                 </Col>
@@ -38,10 +41,13 @@ const LandingPage = () => {
                             find it. We will check where you can find it quickly
                             and cheaply.
                         </label>
-                        <Button
-                            label="Let's go shopping!"
-                            className="p-button-outlined"
-                        />
+
+                        <Link to="/list" style={{ margin: "auto" }}>
+                            <Button
+                                label="Let's go shopping!"
+                                className="p-button-outlined"
+                            />
+                        </Link>
                     </div>
                 </Col>
                 <Col className="category-landing" span={8}>
@@ -53,10 +59,13 @@ const LandingPage = () => {
                             available at your favourite store? We'll check,
                             where is your product.
                         </label>
-                        <Button
-                            label="Check availbility!"
-                            className="p-button-outlined"
-                        />
+
+                        <Link to="/availbility" style={{ margin: "auto" }}>
+                            <Button
+                                label="Check availbility!"
+                                className="p-button-outlined"
+                            />
+                        </Link>
                     </div>
                 </Col>
             </Row>

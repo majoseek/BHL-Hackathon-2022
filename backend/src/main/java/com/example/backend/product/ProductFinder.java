@@ -72,7 +72,7 @@ public class ProductFinder {
         return new JPAQuery<>(entityManager).from(availableProduct)
                 .join(availableProduct.shop, shop)
                 .join(availableProduct.product, product)
-                .where(availableProduct.id.in(productsIds))
+                .where(product.id.in(productsIds))
                 .groupBy(shop.id, shop.name, shop.longitude, product.id, product.EANCode, product.grammage, product.name, product.manufacturer, product.imgURL, shop.latitude, availableProduct.priceInGr, availableProduct.quantity)
                 .transform(groupBy(shop.id).as(GroupBy.set(constructor(StockInfo.class, constructor(ProductInfoDTO.class, product.id, product.name, product.EANCode, product.manufacturer, product.grammage, product.imgURL, availableProduct.priceInGr.avg().intValue()),  availableProduct.priceInGr, availableProduct.quantity))));
     }
