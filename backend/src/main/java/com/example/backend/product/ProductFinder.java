@@ -79,7 +79,18 @@ public class ProductFinder {
     }
 
     List<ProductInfoDTO> getProductsByNames(List<String> providedNames) {
-        return new JPAQuery<>(entityManager).from(product).where(product.name.in(providedNames)).leftJoin(product.availableProducts, availableProduct).select(constructor(ProductInfoDTO.class, product.id, product.name, product.EANCode, product.manufacturer, product.grammage, product.imgURL, availableProduct.priceInGr.avg().intValue())).groupBy(product.id, product.name, product.EANCode, product.manufacturer, product.grammage, product.imgURL).fetch();
+        return providedNames.stream().map((it) -> new JPAQuery<>(entityManager).from(product)
+                .where(product.name.like("%" + it + "%"))
+                .leftJoin(product.availableProducts, availableProduct)
+                .select(constructor(ProductInfoDTO.class,
+                        product.id,
+                        product.name,
+                        product.EANCode,
+                        product.manufacturer, product.grammage,
+                        product.imgURL,
+                        availableProduct.priceInGr.avg().intValue()))
+                .groupBy(product.id, product.name, product.EANCode, product.manufacturer, product.grammage, product.imgURL).fetch()).flatMap(List::stream).toList();
+
     }
 
     //Get products by list of tags
@@ -108,9 +119,7 @@ public class ProductFinder {
                 .distinct()
                 .filter(productsByTag::contains).toList();
 
-        products.forEach(it -> {
-            it.setTags(tagFinder.getTagsByProductId(it.getId()));
-        });
+        products.forEach(it -> it.setTags(tagFinder.getTagsByProductId(it.getId())));
 
         return products;
 
