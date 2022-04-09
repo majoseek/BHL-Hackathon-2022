@@ -7,6 +7,8 @@ import { get } from "../../common/http/HttpRequestService";
 import { UriBuilder } from "../../common/http/UriBuilder";
 import { StockInfoDTO } from "./table/dto/StockInfo.dto";
 import { useEffect } from "react";
+import "./styles.css";
+
 const SearchProductPage = () => {
     const [productNames, setProductNames] = useState<string[]>([]);
     const [filteredNames, setFilteredNames] = useState<string[]>([]);

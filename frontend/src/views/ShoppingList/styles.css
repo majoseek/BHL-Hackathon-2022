@@ -27,3 +27,6 @@
 .proceed-button span {
     font-weight: 500;
 }
+.p-autocomplete-item {
+    max-width: 300px;
+}
