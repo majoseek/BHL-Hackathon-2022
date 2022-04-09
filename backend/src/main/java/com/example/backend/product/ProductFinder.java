@@ -4,7 +4,6 @@ import com.example.backend.shop.DistanceService;
 import com.example.backend.shop.ShopFinder;
 import com.example.backend.shop.ShopInfoDTO;
 import com.querydsl.core.group.GroupBy;
-import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQuery;
 import org.springframework.stereotype.Service;
 
@@ -21,7 +20,6 @@ import static com.example.backend.shop.QShop.shop;
 import static com.example.backend.tag.QTag.tag;
 import static com.querydsl.core.group.GroupBy.groupBy;
 import static com.querydsl.core.types.Projections.constructor;
-import static org.hibernate.criterion.Projections.avg;
 
 
 @Service
@@ -86,7 +84,7 @@ public class ProductFinder {
                 .join(availableProduct.shop, shop)
                 .join(availableProduct.product, product)
                 .where(availableProduct.id.in(productsIds))
-                .transform(groupBy(shop.id).as(GroupBy.set(constructor(ProductInfoDTO.class, product.id, product.name, product.EANCode, product.manufacturer, product.grammage, product.imgURL))));
+                .transform(groupBy(shop.id).as(GroupBy.set(constructor(ProductInfoDTO.class, product.id, product.name, product.EANCode, product.manufacturer, product.grammage, product.imgURL, availableProduct.priceInGr))));
     }
 
 
