@@ -1,7 +1,7 @@
 //@ts-nocheck
 import React, {useEffect, useState} from "react";
 import ProductsTable from "../../components/ProductsTable";
-import { AutoComplete, Col, Input, Row } from "antd";
+import {AutoComplete, Col, Input, Row} from "antd";
 import ProductCard from "../../components/ProductCard";
 import "./styles.css";
 import {ProductsTableDictionary} from "./table/ProductsTableDictionary";
@@ -9,14 +9,16 @@ import {get} from "../../common/http/HttpRequestService";
 import {UriBuilder} from "../../common/http/UriBuilder";
 import {StockInfoDTO} from "./table/dto/StockInfo.dto";
 import {Button} from "primereact/button";
+import {ShoppingListElementDTO} from "./table/dto/ShoppingListElementDTO";
+import {ProductInfoDTO} from "./table/dto/ProductInfo.dto";
 
 const options = [
-    { value: "Szynka konserwowa" },
-    { value: "Szynka jakaś tam" },
-    { value: "Szynka sokołów" },
-    { value: "Mleko" },
-    { value: "Jajko" },
-    { value: "Wołowina" },
+    {value: "Szynka konserwowa"},
+    {value: "Szynka jakaś tam"},
+    {value: "Szynka sokołów"},
+    {value: "Mleko"},
+    {value: "Jajko"},
+    {value: "Wołowina"},
 ];
 
 const ShoppingList = () => {
@@ -24,11 +26,30 @@ const ShoppingList = () => {
     const [searchedText, setSearchedText] = useState<string>("");
     const [filteredTableValue, setFilteredTableValue] = useState<string>()
 
+    const [shoppingListElements, setShoppingListElements] = useState<ShoppingListElementDTO[]>([])
 
     useEffect(() => {
         fetchProductInfo()
     }, [])
 
+    const onProductAdd = (productInfoDTO: ProductInfoDTO) => {
+        if (shoppingListElements.some(el => el.productId == productInfoDTO.id)) {
+            return;
+        }
+        const shoppingListElement: ShoppingListElementDTO = {
+            productName: productInfoDTO.name,
+            productId: productInfoDTO.id,
+            averagePrice: productInfoDTO.averagePrice
+        }
+        console.log("Dupa");
+        setShoppingListElements([...shoppingListElements, shoppingListElement])
+    }
+
+    const onProductDelete = (toDeleteId: number) => {
+        setShoppingListElements(
+            shoppingListElements.filter(id => id.productId !== toDeleteId)
+        );
+    }
 
     const fetchProductInfo = async () => {
         const productInfo: StockInfoDTO[] = await get(
@@ -40,13 +61,16 @@ const ShoppingList = () => {
         setProductNames(productNames);
     }
 
-
+    // @ts-ignore
     return (
         <React.Fragment>
             <Button/>
             <Row>
                 <Col span={8}>
-                    <ProductsTable/>
+                    <ProductsTable
+                        shoppingListElements={shoppingListElements}
+                        onDeleteElement={onProductDelete}
+                    />
                 </Col>
                 <Col span={16}>
                     <h2>Most common categories</h2>
@@ -94,9 +118,11 @@ const ShoppingList = () => {
                 </Col>
             </Row>
             <Row>
-                <ProductsTableDictionary name={filteredTableValue}/>
+                <ProductsTableDictionary name={filteredTableValue} onProductAdd={onProductAdd}/>
             </Row>
         </React.Fragment>
     );
+
+
 };
 export default ShoppingList;

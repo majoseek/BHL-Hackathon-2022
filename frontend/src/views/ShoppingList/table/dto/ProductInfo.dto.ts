@@ -4,4 +4,5 @@ export interface ProductInfoDTO {
     EANCode: string;
     manufacturer: string;
     grammage: string;
+    averagePrice: number;
 }

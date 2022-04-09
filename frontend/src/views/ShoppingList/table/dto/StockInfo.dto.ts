@@ -5,5 +5,4 @@ export interface StockInfoDTO {
     latitude: number;
     price: number;
     quantity: number;
-    stockAvailability: StockInfoDTO[];
 }
