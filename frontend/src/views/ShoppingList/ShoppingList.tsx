@@ -183,6 +183,7 @@ const ShoppingList = (props: ShoppingListProps) => {
                 <Col offset={6} style={{ minWidth: "550px" }}>
                     <ProductsTableDictionary
                         name={filteredTableValue}
+                        tag={selectedTag}
                         onProductAdd={onProductAdd}
                     />
                 </Col>

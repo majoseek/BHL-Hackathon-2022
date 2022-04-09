@@ -10,6 +10,7 @@ import {ProductInfoDTO} from "./dto/ProductInfo.dto";
 
 interface ProductsTableProps {
     name?: string;
+    tag?: string;
     onProductAdd: (productInfoDTO: ProductInfoDTO) => void;
 }
 
@@ -28,6 +29,7 @@ export const ProductsTableDictionary = (props: ProductsTableProps) => {
             new UriBuilder().all("products").build(),
             {
                 name: props.name,
+                tag: props.tag
             }
         );
 
