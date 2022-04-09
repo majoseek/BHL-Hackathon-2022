@@ -1,0 +1,24 @@
+############################################
+# TESKTY DO SKOPIOWANIA NA WITRYNĘ BASK.ET #
+############################################
+
+Landing page:
+    góra:
+        Witaj! Stwórz swój bask.et <logo>
+        Co robisz? Czego potrzebujesz?
+
+    kolumny:
+        lewa:
+            tytuł:      Gotuję z przepisu
+            definicja:  Wklej po prostu sekcję "składniki" z przepisu, który zamierzasz zrealizować! Sami się zorientujemy, czego potrzebujesz
+            przycisk:   Przygotuj się do gotowania
+
+        środkowa:
+            tytuł:      Planuję zakupy
+            definicja:  Wybierz produkty, które chcesz kupić. Zobacz, gdzie możesz je kupić. Dbając o twój czas i portfel pokażemy ci, gdzie to zrobić szybko i tanio
+            przycisk:   Skomponuj listę zakupów
+
+        prawa:
+            tytuł:      Szukam produktu
+            definicja:  Poszukujesz czegoś konkretnego, czego nie mogłeś znaleźć w ulubionym sklepie? Sprawdzimy, gdzie w twojej okolicy taki jest dostępny.
+            przycisk:   Sprawdź dostępność
