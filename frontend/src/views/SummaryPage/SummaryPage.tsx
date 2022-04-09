@@ -84,6 +84,7 @@ export const SummaryPage = (props: SummaryPageProps) => {
                             {
                                 productStockInfos.map((productStockInfo: ProductStockInfoDTO) =>
                                     <Marker
+
                                         color={productStockInfo.markerColor}
                                         width={50}
                                         anchor={[productStockInfo?.shopInfoDTO?.latitude, productStockInfo?.shopInfoDTO?.longitude]}
