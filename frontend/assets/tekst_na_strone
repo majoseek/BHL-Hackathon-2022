@@ -1,0 +1,36 @@
+############################################
+# TESKTY DO SKOPIOWANIA NA WITRYNĘ BASK.ET #
+############################################
+
+Landing page:
+    góra:
+        Witaj! Stwórz swój bask.et <logo>
+        Co robisz? Czego potrzebujesz?
+        --
+        Welcome! Fill your basket right away.
+        What do you want? What do you need?
+
+    kolumny:
+        lewa:
+            tytuł:      Gotuję z przepisu
+                        I'm cooking from recipe
+            definicja:  Wklej po prostu sekcję "składniki" z przepisu, który zamierzasz zrealizować! Sami się zorientujemy, czego potrzebujesz
+                        Just paste part of your recipe with the ingredients. We'll take care of what you need to cook it.
+            przycisk:   Przygotuj się do gotowania
+                        Prepare for making that dish
+
+        środkowa:
+            tytuł:      Planuję zakupy
+                        I'm planning a shopping
+            definicja:  Wybierz produkty, które chcesz kupić. Zobacz, gdzie możesz je kupić. Dbając o twój czas i portfel pokażemy ci, gdzie to zrobić szybko i tanio
+                        Choose what you're want to aquire. See where you'll find it. Taking care of your time and wallet we'll show you, where you can find it quickly and cheaply.
+            przycisk:   Skomponuj listę zakupów
+                        Make your shopping list
+
+        prawa:
+            tytuł:      Szukam produktu
+                        I need to find one thing
+            definicja:  Poszukujesz czegoś konkretnego, czego nie mogłeś znaleźć w ulubionym sklepie? Sprawdzimy, gdzie w twojej okolicy taki jest dostępny.
+                        Do you need a certain thing you're not sure is available at your favourite store? We'll check, where in your neighbourhood that thing is present.
+            przycisk:   Sprawdź dostępność
+                        Check availability.
