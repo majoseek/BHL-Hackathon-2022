@@ -1,1 +1,34 @@
-@import '~antd/dist/antd.css';
+@import "~antd/dist/antd.css";
+.custom-shape-divider-bottom-1649482509 {
+    width: 100%;
+    overflow: hidden;
+    line-height: 0;
+}
+
+.custom-shape-divider-bottom-1649482509 svg {
+    position: relative;
+    display: block;
+    width: calc(117% + 1.3px);
+    height: 56px;
+}
+
+.custom-shape-divider-bottom-1649482509 .shape-fill {
+    fill: #00f9ff;
+}
+.custom-shape-divider-top-1649482630 {
+    width: 100%;
+    overflow: hidden;
+    line-height: 0;
+    transform: rotate(180deg);
+}
+
+.custom-shape-divider-top-1649482630 svg {
+    position: relative;
+    display: block;
+    width: calc(117% + 1.3px);
+    height: 56px;
+}
+
+.custom-shape-divider-top-1649482630 .shape-fill {
+    fill: #00f9ff;
+}

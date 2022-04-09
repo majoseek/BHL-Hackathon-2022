@@ -49,6 +49,7 @@ export const SummaryPage = (props: SummaryPageProps) => {
                         userLatitude: position.coords.latitude,
                         userLongitude: position.coords.longitude,
                         productIds: props.productIds.join(","),
+                        QCoefficient: 1.0,
                     }
                 );
                 setProductStockInfos(data);
