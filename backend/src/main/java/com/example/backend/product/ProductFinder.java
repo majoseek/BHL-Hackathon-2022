@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.util.*;
+import java.util.stream.Collectors;
 
 import static com.example.backend.availableProduct.QAvailableProduct.availableProduct;
 import static com.example.backend.product.QProduct.product;
@@ -85,16 +86,25 @@ public class ProductFinder {
     }
 
 
-    public List<ProductInfoDTO> getProductsByNameOrTag(String name, String tag) {
+    public List<ProductInfoDTO> getProductsByNameOrTag(Optional<String> name, Optional<String> tag) {
 
-        List<ProductInfoDTO> productsByName = getProductsByName(name);
-        List<ProductInfoDTO> productsByTag = getProductsByTag(tag);
+        List<ProductInfoDTO> productsByName;
+        if (name.isEmpty()) {
+            productsByName = getProducts();
+        } else {
+            productsByName = getProductsByName(name.get());
+        }
 
-        List<ProductInfoDTO> products = new LinkedList<>();
-        products.addAll(productsByName);
-        products.addAll(productsByTag);
-
-        return products;
+        List<ProductInfoDTO> productsByTag;
+        if (name.isEmpty()) {
+            productsByTag = getProducts();
+        } else {
+            productsByTag = getProductsByName(name.get());
+        }
+        return productsByName.stream()
+                .distinct()
+                .filter(productsByTag::contains)
+                .collect(Collectors.toList());
 
     }
 }
