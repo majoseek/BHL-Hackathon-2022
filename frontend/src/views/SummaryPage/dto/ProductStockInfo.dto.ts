@@ -5,4 +5,6 @@ export interface ProductStockInfoDTO {
     shopInfoDTO: ShopInfoDTO;
     distance: number;
     availableProducts: ProductInfoDTO[];
+
+    markerColor?: string;
 }

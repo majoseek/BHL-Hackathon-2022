@@ -1,9 +1,11 @@
 import {get} from "../../common/http/HttpRequestService";
 import React, {useEffect, useState} from "react";
 import {ProductStockInfoDTO} from "./dto/ProductStockInfo.dto";
-import {DataTable} from "primereact/datatable";
+import {DataTable, DataTableRowClickEventParams} from "primereact/datatable";
 import {Column} from "primereact/column";
 import {Map, Marker} from "pigeon-maps"
+import {useNavigate} from "react-router-dom";
+import {ShopInfoDTO} from "./dto/ShopInfoDTO";
 
 export interface SummaryPageProps {
     productIds: number[];
@@ -12,6 +14,17 @@ export interface SummaryPageProps {
 export const SummaryPage = (props: SummaryPageProps) => {
     const [geolocationCoordinates, setGeolocationCordinates] = useState<GeolocationCoordinates>();
     const [productStockInfos, setProductStockInfos] = useState<ProductStockInfoDTO[]>([]);
+
+
+    const [latitude, setLatitude] = useState<number>();
+
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        if (props.productIds.length === 0) {
+            navigate('/list')
+        }
+    }, [])
 
 
     useEffect(() => {
@@ -39,6 +52,17 @@ export const SummaryPage = (props: SummaryPageProps) => {
         }, options);
     }
 
+    const onRowClick = (data: DataTableRowClickEventParams) => {
+        const clickedRow: ShopInfoDTO = data.data.shopInfoDTO;
+
+        const updatedColors = productStockInfos.map(productStockInfo =>
+            ({...productStockInfo, markerColor: clickedRow?.id === productStockInfo?.shopInfoDTO?.id ? "red" : "green"})
+        )
+        //setProductStockInfos()
+        setProductStockInfos(updatedColors);
+        // setLatitude(clickedRow.latitude)
+    }
+
 
     // @ts-ignore
     return (
@@ -48,14 +72,17 @@ export const SummaryPage = (props: SummaryPageProps) => {
                     {
                         geolocationCoordinates &&
                         <Map height={300}
+                            // @ts-ignore
+                             center={[latitude, 1]}
                              defaultCenter={[geolocationCoordinates?.latitude, geolocationCoordinates?.longitude]}
                              defaultZoom={11}>
                             {/* @ts-ignore */}
                             <Marker width={50}
                                     anchor={[geolocationCoordinates?.latitude, geolocationCoordinates?.longitude]}/>
                             {
-                                productStockInfos.map((productStockInfo) =>
+                                productStockInfos.map((productStockInfo: ProductStockInfoDTO) =>
                                     <Marker
+                                        color={productStockInfo.markerColor}
                                         width={50}
                                         anchor={[productStockInfo?.shopInfoDTO?.latitude, productStockInfo?.shopInfoDTO?.longitude]}
                                     />
@@ -66,7 +93,7 @@ export const SummaryPage = (props: SummaryPageProps) => {
                     {/* @ts-ignore */}
                 </div>
                 <div className={"p-col-6"}>
-                    <DataTable value={productStockInfos}>
+                    <DataTable value={productStockInfos} onRowClick={onRowClick}>
                         <Column header={"Shop"}
                                 body={(productStockInfo: ProductStockInfoDTO) => productStockInfo?.shopInfoDTO?.name}/>
                         <Column header={"Distance"} field={"distance"}/>
