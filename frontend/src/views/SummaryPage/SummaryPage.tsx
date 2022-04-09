@@ -62,7 +62,6 @@ export const SummaryPage = (props: SummaryPageProps) => {
                 );
                 setProductStockInfos(data);
                 setShopsQuantity(data.length);
-                console.log(data);
             },
             () => {},
             options

@@ -10,11 +10,9 @@ import { ProductInfoDTO } from "./dto/ProductInfo.dto";
 
 interface ProductsTableProps {
     name?: string;
-    tag?: string;
-    onProductAdd: (productInfoDTO: ProductInfoDTO) => void;
 }
 
-export const ProductsTableDictionary = (props: ProductsTableProps) => {
+export const SearchProductTable = (props: ProductsTableProps) => {
     const [stockInfo, setStockInfo] = useState<StockInfoDTO[]>([]);
 
     useEffect(() => {
@@ -29,28 +27,11 @@ export const ProductsTableDictionary = (props: ProductsTableProps) => {
             new UriBuilder().all("products").build(),
             {
                 name: props.name,
-                tag: props.tag,
             }
         );
 
         // @ts-ignore
         setStockInfo(productInfo);
-    };
-
-    const actionBodyTemplate = (productInfo: ProductInfoDTO) => {
-        return (
-            <>
-                {productInfo.averagePrice > 0 ? (
-                    <Button
-                        type="button"
-                        icon="pi pi-plus"
-                        onClick={() => props.onProductAdd(productInfo)}
-                    />
-                ) : (
-                    <></>
-                )}
-            </>
-        );
     };
 
     const getProductTemplate = (productInfo: ProductInfoDTO) => {
@@ -87,11 +68,6 @@ export const ProductsTableDictionary = (props: ProductsTableProps) => {
                         const val = product.averagePrice / 100;
                         return val > 0 ? String(val) + " zł" : "-";
                     }}
-                />
-                <Column
-                    headerStyle={{ width: "4rem", textAlign: "center" }}
-                    bodyStyle={{ textAlign: "center", overflow: "visible" }}
-                    body={actionBodyTemplate}
                 />
             </DataTable>
         </div>
