@@ -1,24 +1,27 @@
-//@ts-nocheck
-import React, { useEffect, useState } from "react";
+import React, {useEffect, useState} from "react";
 import ProductsTable from "../../components/ProductsTable";
-import { Col, Divider, Row } from "antd";
+import {Col, Divider, Row} from "antd";
 import ProductCard from "../../components/ProductCard";
 import "./styles.css";
-import { ProductsTableDictionary } from "./table/ProductsTableDictionary";
-import { get } from "../../common/http/HttpRequestService";
-import { UriBuilder } from "../../common/http/UriBuilder";
-import { StockInfoDTO } from "./table/dto/StockInfo.dto";
-import { Button } from "primereact/button";
-import { ShoppingListElementDTO } from "./table/dto/ShoppingListElementDTO";
-import { ProductInfoDTO } from "./table/dto/ProductInfo.dto";
-import { useNavigate } from "react-router-dom";
-import { AutoComplete } from "primereact/autocomplete";
+import {ProductsTableDictionary} from "./table/ProductsTableDictionary";
+import {get} from "../../common/http/HttpRequestService";
+import {UriBuilder} from "../../common/http/UriBuilder";
+import {StockInfoDTO} from "./table/dto/StockInfo.dto";
+import {Button} from "primereact/button";
+import {ShoppingListElementDTO} from "./table/dto/ShoppingListElementDTO";
+import {ProductInfoDTO} from "./table/dto/ProductInfo.dto";
+import {useNavigate} from "react-router-dom";
+import {AutoComplete} from "primereact/autocomplete";
 
 export interface ShoppingListProps {
     setSelectedProductIds: (ids: number[]) => void;
+    shoppingListElements: ShoppingListElementDTO[];
+    setShoppingListElements: (elements: ShoppingListElementDTO[]) => void;
 }
 
 const ShoppingList = (props: ShoppingListProps) => {
+    const {shoppingListElements, setShoppingListElements} = props;
+
     const [productNames, setProductNames] = useState<string[]>([]);
     const [filteredNames, setFilteredNames] = useState<string[]>([]);
 
@@ -27,9 +30,6 @@ const ShoppingList = (props: ShoppingListProps) => {
 
     const [selectedTag, setSelectedTag] = useState<string>();
 
-    const [shoppingListElements, setShoppingListElements] = useState<
-        ShoppingListElementDTO[]
-    >([]);
 
     const [stockInfo, setStockInfo] = useState<StockInfoDTO[]>([]);
 
@@ -37,7 +37,7 @@ const ShoppingList = (props: ShoppingListProps) => {
 
     const onRedirect = () => {
         props.setSelectedProductIds(
-            shoppingListElements.map((product) => product.productId)
+            props.shoppingListElements.map((product) => product.productId)
         );
         navigate("/map");
     };
@@ -59,7 +59,7 @@ const ShoppingList = (props: ShoppingListProps) => {
 
     const onProductAdd = (productInfoDTO: ProductInfoDTO) => {
         if (
-            shoppingListElements.some((el) => el.productId == productInfoDTO.id)
+            props.shoppingListElements.some((el) => el.productId == productInfoDTO.id)
         ) {
             return;
         }
@@ -68,7 +68,7 @@ const ShoppingList = (props: ShoppingListProps) => {
             productId: productInfoDTO.id,
             averagePrice: productInfoDTO.averagePrice,
         };
-        setShoppingListElements([...shoppingListElements, shoppingListElement]);
+        props.setShoppingListElements([...shoppingListElements, shoppingListElement]);
     };
 
     const onProductDelete = (toDeleteId: number) => {
