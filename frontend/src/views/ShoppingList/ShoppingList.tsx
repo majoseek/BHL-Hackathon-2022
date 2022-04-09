@@ -12,7 +12,7 @@ import { Button } from "primereact/button";
 import { ShoppingListElementDTO } from "./table/dto/ShoppingListElementDTO";
 import { ProductInfoDTO } from "./table/dto/ProductInfo.dto";
 import { useNavigate } from "react-router-dom";
-
+import { Divider } from "antd";
 const options = [
     { value: "Szynka konserwowa" },
     { value: "Szynka jakaś tam" },
@@ -47,7 +47,6 @@ const ShoppingList = (props: ShoppingListProps) => {
     useEffect(() => {
         fetchProductInfo();
     }, []);
-
     const fetchProductInfo = async () => {
         const productInfo: StockInfoDTO[] = await get(
             new UriBuilder().all("products").build()
@@ -82,12 +81,18 @@ const ShoppingList = (props: ShoppingListProps) => {
     return (
         <React.Fragment>
             <Row className="main-container" gutter={8}>
-                <Col span={10}>
+                <Col span={10} style={{ textAlign: "center" }}>
+                    <h2 style={{ marginBottom: "20px" }}>Your products</h2>
                     <ProductsTable
                         shoppingListElements={shoppingListElements}
                         onDeleteElement={onProductDelete}
                     />
-                    <Button label="Proceed" onClick={onRedirect} />
+                    <Button
+                        className="proceed-button"
+                        label="Proceed"
+                        onClick={onRedirect}
+                        disabled={!shoppingListElements.length}
+                    />
                 </Col>
                 <Col span={14}>
                     <h2>Most common categories</h2>
@@ -125,6 +130,11 @@ const ShoppingList = (props: ShoppingListProps) => {
                             name="Meat"
                         />
                     </div>
+                </Col>
+                <Divider />
+            </Row>
+            <Row>
+                <Col offset={8}>
                     <AutoComplete
                         options={productNames}
                         filterOption={(inputValue, option) =>
@@ -135,20 +145,26 @@ const ShoppingList = (props: ShoppingListProps) => {
                     >
                         <Input.Search
                             size="large"
-                            placeholder="input here"
+                            placeholder="Type name of product to buy..."
                             value={searchedText}
                             onChange={(e) => setSearchedText(e.target.value)}
                             onSearch={setFilteredTableValue}
                         />
                     </AutoComplete>
-                    <h1>wyszukane produkty</h1>
                 </Col>
             </Row>
-            <Row>
-                <ProductsTableDictionary
-                    name={filteredTableValue}
-                    onProductAdd={onProductAdd}
-                />
+            <Row
+                style={{
+                    marginTop: "40px",
+                    paddingBottom: "100px",
+                }}
+            >
+                <Col offset={6} style={{ minWidth: "550px" }}>
+                    <ProductsTableDictionary
+                        name={filteredTableValue}
+                        onProductAdd={onProductAdd}
+                    />
+                </Col>
             </Row>
         </React.Fragment>
     );

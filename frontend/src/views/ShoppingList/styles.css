@@ -2,10 +2,11 @@
     display: flex;
     flex-wrap: wrap;
     justify-content: space-around;
+    margin: 35px;
 }
 .card-holder img {
-    width: 140px;
-    height: 140px;
+    width: 160px;
+    height: 160px;
 }
 .ant-card.ant-card-bordered.ant-card-hoverable {
     margin-top: 10px;
@@ -17,12 +18,12 @@
     padding-top: 0;
     text-align: center;
 }
-.p-button {
+.proceed-button {
     float: right;
     margin-top: 25px !important;
     background-color: #ff7f00 !important;
     border: none !important;
 }
-.p-button span {
+.proceed-button span {
     font-weight: 500;
 }
