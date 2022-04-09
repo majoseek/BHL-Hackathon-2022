@@ -7,7 +7,8 @@ import "primereact/resources/themes/lara-light-indigo/theme.css"; //theme
 import "primereact/resources/primereact.min.css"; //core css
 import "primeicons/primeicons.css";
 import {useState} from "react";
-import {SummaryPage} from "./views/SummaryPage/SummaryPage"; //icons
+import {SummaryPage} from "./views/SummaryPage/SummaryPage";
+import {RecipeUploadComponent} from "./views/RecipeUpload/RecipeUpload.component"; //icons
 
 const App = () => {
     const [selectedProductsIDs, setSelectedProductIds] = useState<number[]>([]);
@@ -20,6 +21,7 @@ const App = () => {
                 <Route path="/" element={<LandingPage/>}/>
                 <Route path="/list" element={<ShoppingList setSelectedProductIds={setSelectedProductIds}/>}/>
                 <Route path="/map" element={<SummaryPage productIds={selectedProductsIDs}/>}/>
+                <Route path="/uploadRecipe" element={<RecipeUploadComponent/>}/>
             </Routes>
         </BrowserRouter>
     );
