@@ -6,6 +6,7 @@ import {Column} from "primereact/column";
 import {Map, Marker} from "pigeon-maps"
 import {useNavigate} from "react-router-dom";
 import {ShopInfoDTO} from "./dto/ShopInfoDTO";
+import {Slider, SliderChangeParams} from "primereact/slider";
 
 export interface SummaryPageProps {
     productIds: number[];
@@ -14,9 +15,9 @@ export interface SummaryPageProps {
 export const SummaryPage = (props: SummaryPageProps) => {
     const [geolocationCoordinates, setGeolocationCordinates] =
         useState<GeolocationCoordinates>();
-    const [productStockInfos, setProductStockInfos] = useState<
-        ProductStockInfoDTO[]
-    >([]);
+    const [productStockInfos, setProductStockInfos] = useState<ProductStockInfoDTO[]>([]);
+
+    const [sliderValue, setSliderValue] = useState<any>(0.5);
 
     const [latitude, setLatitude] = useState<number>();
 
@@ -31,7 +32,7 @@ export const SummaryPage = (props: SummaryPageProps) => {
 
     useEffect(() => {
         loadSummary();
-    }, []);
+    }, [sliderValue]);
 
     var options = {
         enableHighAccuracy: true,
@@ -46,7 +47,8 @@ export const SummaryPage = (props: SummaryPageProps) => {
                 {
                     userLatitude: position.coords.latitude,
                     userLongitude: position.coords.longitude,
-                    productIds: props.productIds.join(",")
+                    productIds: props.productIds.join(","),
+                    QCoefficient: sliderValue
                 });
             setProductStockInfos(data);
         }, () => {
@@ -59,7 +61,6 @@ export const SummaryPage = (props: SummaryPageProps) => {
         const updatedColors = productStockInfos.map(productStockInfo =>
             ({...productStockInfo, markerColor: clickedRow?.id === productStockInfo?.shopInfoDTO?.id ? "red" : "green"})
         )
-        //setProductStockInfos()
         setProductStockInfos(updatedColors);
         // setLatitude(clickedRow.latitude)
     }
@@ -90,7 +91,7 @@ export const SummaryPage = (props: SummaryPageProps) => {
                                 )
                             }
                         </Map>
-                    )}
+                    })
                     {/* @ts-ignore */}
                 </div>
                 <div className={"p-col-6"}>
@@ -101,6 +102,18 @@ export const SummaryPage = (props: SummaryPageProps) => {
                         <Column header={"Available products"}
                                 body={(productStockInfo: ProductStockInfoDTO) => productStockInfo.availableProducts.map(a => a.name).join(" ")}/>
                     </DataTable>
+                </div>
+                <div className={"p-col-6"}>
+                    {/* @ts-ignore */}
+                    <Slider
+                        min={0}
+                        max={1}
+                        step={0.25}
+                        value={sliderValue}
+                        onChange={(e: SliderChangeParams) => {
+                            setSliderValue(e.value)
+                        }}
+                    />
                 </div>
             </div>
         </>
