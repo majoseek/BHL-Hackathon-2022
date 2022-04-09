@@ -15,7 +15,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 import static com.example.backend.availableProduct.QAvailableProduct.availableProduct;
 import static com.example.backend.product.QProduct.product;
@@ -84,12 +83,12 @@ public class ProductFinder {
         shopsWithProducts.forEach((shopId, stockInfos) -> {
             ShopInfoDTO shopInfo = shopFinder.getShopInfoById(shopId);
             double distanceInMeters = DistanceService.getDistance(userLatitude, userLongtitude, shopInfo.latitude(), shopInfo.longitude());
-            if (distanceInMeters < MAX_DISTANCE) {
+//            if (distanceInMeters < MAX_DISTANCE) {
                 List<ParamsInputData> productsInfos = stockInfos.stream().map((it) -> new ParamsInputData(it.price(), it.productInfoDTO().getAveragePrice(), it.quantity())).toList();
                 Integer missingProducts = productIds.size() - stockInfos.size();
                 productStockInfoDTOS.add(new ProductStockInfoDTO(shopInfo, distanceInMeters, stockInfos, ShopScoreGenerator.generateScore(distanceInMeters, missingProducts, productsInfos, QCoefficient)));
 
-            }
+//            }
         });
         return productStockInfoDTOS;
     }
