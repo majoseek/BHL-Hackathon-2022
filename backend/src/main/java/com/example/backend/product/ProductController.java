@@ -46,9 +46,8 @@ public class ProductController {
     }
 
     @GetMapping("/stockInfo")
-    List<ProductStockInfoDTO> getAvailableStockInfo(@RequestParam Set<Long> productIds,
-                                                    @RequestParam Double userLatitude, @RequestParam Double userLongitude) {
-        return productFinder.getStockAvailibity(productIds, userLatitude, userLongitude);
+    List<ProductStockInfoDTO> getAvailableStockInfo(@RequestParam Set<Long> productIds, @RequestParam Double userLatitude, @RequestParam Double userLongitude, @RequestParam Double QCoefficient) {
+        return productFinder.getStockAvailibity(productIds, userLatitude, userLongitude, QCoefficient);
     }
 
     @GetMapping

@@ -1,5 +1,7 @@
 package com.example.backend.product;
 
+import com.example.backend.math.ParamsInputData;
+import com.example.backend.math.ShopScoreGenerator;
 import com.example.backend.shop.DistanceService;
 import com.example.backend.shop.ShopFinder;
 import com.example.backend.shop.ShopInfoDTO;
@@ -13,6 +15,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import static com.example.backend.availableProduct.QAvailableProduct.availableProduct;
 import static com.example.backend.product.QProduct.product;
@@ -61,31 +64,34 @@ public class ProductFinder {
                 .fetch();
     }
 
-    List<ProductStockInfoDTO> getStockAvailibity(Set<Long> productIds, Double userLatitude, Double userLongtitude) {
-        return getProductStockInfo(productIds, userLatitude, userLongtitude);
+    List<ProductStockInfoDTO> getStockAvailibity(Set<Long> productIds, Double userLatitude, Double userLongtitude, Double QEfficient) {
+        return getProductStockInfo(productIds, userLatitude, userLongtitude, QEfficient);
     }
 
-    private List<ProductStockInfoDTO> getProductStockInfo(Set<Long> productIds, Double userLatitude, Double userLongtitude) {
-        Map<Long, Set<ProductInfoDTO>> shopsWithProducts = getShopsWithProducts(productIds);
-        List<ProductStockInfoDTO> productStockInfoDTOS = new LinkedList<>();
-
-        shopsWithProducts.forEach((shopId, productInfoDTOS) -> {
-            ShopInfoDTO shopInfo = shopFinder.getShopInfoById(shopId);
-            double distanceInMeters = DistanceService.getDistance(userLatitude, userLongtitude, shopInfo.latitude(), shopInfo.longitude());
-//            FIXME Uncomment this after fixes
-//            if (distanceInMeters < MAX_DISTANCE) {
-            productStockInfoDTOS.add(new ProductStockInfoDTO(shopInfo, distanceInMeters, productInfoDTOS));
-//            }
-        });
-        return productStockInfoDTOS;
-    }
-
-    private Map<Long, Set<ProductInfoDTO>> getShopsWithProducts(Set<Long> productsIds) {
+    private Map<Long, Set<StockInfo>> getShopsWithProducts(Set<Long> productsIds) {
         return new JPAQuery<>(entityManager).from(availableProduct)
                 .join(availableProduct.shop, shop)
                 .join(availableProduct.product, product)
                 .where(availableProduct.id.in(productsIds))
-                .transform(groupBy(shop.id).as(GroupBy.set(constructor(ProductInfoDTO.class, product.id, product.name, product.EANCode, product.manufacturer, product.grammage, product.imgURL, availableProduct.priceInGr))));
+                .groupBy(shop.id, shop.name, shop.longitude, product.id, product.EANCode, product.grammage, product.name, product.manufacturer, product.imgURL, shop.latitude, availableProduct.priceInGr, availableProduct.quantity)
+                .transform(groupBy(shop.id).as(GroupBy.set(constructor(StockInfo.class, constructor(ProductInfoDTO.class, product.id, product.name, product.EANCode, product.manufacturer, product.grammage, product.imgURL, availableProduct.priceInGr.avg().intValue()),  availableProduct.priceInGr, availableProduct.quantity))));
+    }
+
+    private List<ProductStockInfoDTO> getProductStockInfo(Set<Long> productIds, Double userLatitude, Double userLongtitude, Double QCoefficient) {
+        Map<Long, Set<StockInfo>> shopsWithProducts = getShopsWithProducts(productIds);
+        List<ProductStockInfoDTO> productStockInfoDTOS = new LinkedList<>();
+
+        shopsWithProducts.forEach((shopId, stockInfos) -> {
+            ShopInfoDTO shopInfo = shopFinder.getShopInfoById(shopId);
+            double distanceInMeters = DistanceService.getDistance(userLatitude, userLongtitude, shopInfo.latitude(), shopInfo.longitude());
+            if (distanceInMeters < MAX_DISTANCE) {
+                List<ParamsInputData> productsInfos = stockInfos.stream().map((it) -> new ParamsInputData(it.price(), it.productInfoDTO().getAveragePrice(), it.quantity())).toList();
+                Integer missingProducts = productIds.size() - stockInfos.size();
+                productStockInfoDTOS.add(new ProductStockInfoDTO(shopInfo, distanceInMeters, stockInfos, ShopScoreGenerator.generateScore(distanceInMeters, missingProducts, productsInfos, QCoefficient)));
+
+            }
+        });
+        return productStockInfoDTOS;
     }
 
 
