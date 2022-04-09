@@ -1,0 +1,14 @@
+.card {
+    height: 100px;
+    display: flex;
+    padding: 20px 10px;
+    justify-content: space-between;
+}
+.card button {
+    background-color: #ff7f00;
+    border: none;
+}
+.card button:hover {
+    background-color: #ff7f00 !important;
+    opacity: 90%;
+}
