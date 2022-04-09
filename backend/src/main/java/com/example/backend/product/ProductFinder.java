@@ -5,6 +5,7 @@ import com.example.backend.math.ShopScoreGenerator;
 import com.example.backend.shop.DistanceService;
 import com.example.backend.shop.ShopFinder;
 import com.example.backend.shop.ShopInfoDTO;
+import com.example.backend.tag.TagFinder;
 import com.querydsl.core.group.GroupBy;
 import com.querydsl.jpa.impl.JPAQuery;
 import org.springframework.stereotype.Service;
@@ -12,7 +13,6 @@ import org.springframework.stereotype.Service;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.util.*;
-import java.util.stream.Collectors;
 
 import static com.example.backend.availableProduct.QAvailableProduct.availableProduct;
 import static com.example.backend.product.QProduct.product;
@@ -30,9 +30,11 @@ public class ProductFinder {
     private EntityManager entityManager;
 
     private final ShopFinder shopFinder;
+    private final TagFinder tagFinder;
 
-    public ProductFinder(ShopFinder shopFinder) {
+    public ProductFinder(ShopFinder shopFinder, TagFinder tagFinder) {
         this.shopFinder = shopFinder;
+        this.tagFinder = tagFinder;
     }
 
     ProductInfoDTO getProductInfoById(Long id) {
@@ -77,7 +79,18 @@ public class ProductFinder {
     }
 
     List<ProductInfoDTO> getProductsByNames(List<String> providedNames) {
-        return new JPAQuery<>(entityManager).from(product).where(product.name.in(providedNames)).leftJoin(product.availableProducts, availableProduct).select(constructor(ProductInfoDTO.class, product.id, product.name, product.EANCode, product.manufacturer, product.grammage, product.imgURL, availableProduct.priceInGr.avg().intValue())).groupBy(product.id, product.name, product.EANCode, product.manufacturer, product.grammage, product.imgURL).fetch();
+        return providedNames.stream().map((it) -> new JPAQuery<>(entityManager).from(product)
+                .where(product.name.like("%" + it + "%"))
+                .leftJoin(product.availableProducts, availableProduct)
+                .select(constructor(ProductInfoDTO.class,
+                        product.id,
+                        product.name,
+                        product.EANCode,
+                        product.manufacturer, product.grammage,
+                        product.imgURL,
+                        availableProduct.priceInGr.avg().intValue()))
+                .groupBy(product.id, product.name, product.EANCode, product.manufacturer, product.grammage, product.imgURL).fetch()).flatMap(List::stream).toList();
+
     }
 
     //Get products by list of tags
@@ -96,15 +109,20 @@ public class ProductFinder {
         }
 
         List<ProductInfoDTO> productsByTag;
-        if (name.isEmpty()) {
+        if (tag.isEmpty()) {
             productsByTag = getProducts();
         } else {
-            productsByTag = getProductsByName(name.get());
+            productsByTag = getProductsByTag(tag.get());
+
         }
-        return productsByName.stream()
+        List<ProductInfoDTO> products = productsByName.stream()
                 .distinct()
-                .filter(productsByTag::contains)
-                .collect(Collectors.toList());
+                .filter(productsByTag::contains).toList();
+
+        products.forEach(it -> it.setTags(tagFinder.getTagsByProductId(it.getId())));
+
+        return products;
+
 
     }
 }
