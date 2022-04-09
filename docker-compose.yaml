@@ -9,3 +9,19 @@ services:
       - POSTGRES_PASSWORD=postgres
     ports:
       - '5432:5432'
+  springAPI:
+    image: backend
+    build:
+      context: ./backend
+    ports:
+      - "8080:8080"
+    restart: always
+    depends_on:
+      - db
+  web:
+    build:
+      context: ./frontend
+    ports:
+      - "3030:3030"
+
+
