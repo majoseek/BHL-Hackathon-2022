@@ -19,7 +19,7 @@ export const ProductsTableDictionary = (props: ProductsTableProps) => {
 
     useEffect(() => {
         fetchProductInfo();
-    }, [props.name]);
+    }, [props.name, props.tag]);
 
     const fetchProductInfo = async () => {
         if (!props.name) {
