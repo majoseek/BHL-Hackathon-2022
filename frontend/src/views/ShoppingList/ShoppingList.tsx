@@ -31,6 +31,16 @@ const ShoppingList = () => {
         fetchProductInfo()
     }, [])
 
+    const fetchProductInfo = async () => {
+        const productInfo: StockInfoDTO[] = await get(
+            new UriBuilder()
+                .all("products")
+                .build()
+        );
+        const productNames = productInfo.map(product => ({value: product.name}));
+        setProductNames(productNames);
+    }
+
     const onProductAdd = (productInfoDTO: ProductInfoDTO) => {
         if (shoppingListElements.some(el => el.productId == productInfoDTO.id)) {
             return;
@@ -40,7 +50,6 @@ const ShoppingList = () => {
             productId: productInfoDTO.id,
             averagePrice: productInfoDTO.averagePrice
         }
-        console.log("Dupa");
         setShoppingListElements([...shoppingListElements, shoppingListElement])
     }
 
@@ -50,14 +59,23 @@ const ShoppingList = () => {
         );
     }
 
-    const fetchProductInfo = async () => {
-        const productInfo: StockInfoDTO[] = await get(
-            new UriBuilder()
-                .all("products")
-                .build()
-        );
-        const productNames = productInfo.map(product => ({value: product.name}));
-        setProductNames(productNames);
+    var options = {
+        enableHighAccuracy: true,
+        timeout: 5000,
+        maximumAge: 0
+    };
+
+    const onProceed = () => {
+        navigator.geolocation.getCurrentPosition(async (position: GeolocationPosition) => {
+            console.log(position);
+            const data = await get("/products/stockInfo",
+                {
+                    userLatitude: position.coords.latitude,
+                    userLongitude: position.coords.longitude,
+                    productIds: shoppingListElements.map(product => product.productId).join(",")
+                });
+        }, () => {
+        }, options);
     }
 
     // @ts-ignore
@@ -70,6 +88,7 @@ const ShoppingList = () => {
                         shoppingListElements={shoppingListElements}
                         onDeleteElement={onProductDelete}
                     />
+                    <Button label="Proceed" onClick={onProceed}/>
                 </Col>
                 <Col span={16}>
                     <h2>Most common categories</h2>
