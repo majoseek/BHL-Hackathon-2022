@@ -10,3 +10,8 @@
     width: 80%;
     text-align: center;
 }
+
+.p-grid.p-d-flex {
+    display: flex;
+    justify-content: space-around;
+}

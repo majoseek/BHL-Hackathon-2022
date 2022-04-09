@@ -6,4 +6,5 @@ export interface ProductInfoDTO {
     grammage: string;
     averagePrice: number;
     imgURL: string;
+    tags: string[];
 }

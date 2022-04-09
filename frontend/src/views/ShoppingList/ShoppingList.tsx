@@ -1,18 +1,17 @@
-//@ts-nocheck
-import React, { useEffect, useState } from "react";
+import React, {useEffect, useState} from "react";
 import ProductsTable from "../../components/ProductsTable";
-import { Col, Divider, Row } from "antd";
+import {Col, Divider, Row} from "antd";
 import ProductCard from "../../components/ProductCard";
 import "./styles.css";
-import { ProductsTableDictionary } from "./table/ProductsTableDictionary";
-import { get } from "../../common/http/HttpRequestService";
-import { UriBuilder } from "../../common/http/UriBuilder";
-import { StockInfoDTO } from "./table/dto/StockInfo.dto";
-import { Button } from "primereact/button";
-import { ShoppingListElementDTO } from "./table/dto/ShoppingListElementDTO";
-import { ProductInfoDTO } from "./table/dto/ProductInfo.dto";
-import { useNavigate } from "react-router-dom";
-import { AutoComplete } from "primereact/autocomplete";
+import {ProductsTableDictionary} from "./table/ProductsTableDictionary";
+import {get} from "../../common/http/HttpRequestService";
+import {UriBuilder} from "../../common/http/UriBuilder";
+import {StockInfoDTO} from "./table/dto/StockInfo.dto";
+import {Button} from "primereact/button";
+import {ShoppingListElementDTO} from "./table/dto/ShoppingListElementDTO";
+import {ProductInfoDTO} from "./table/dto/ProductInfo.dto";
+import {useNavigate} from "react-router-dom";
+import {AutoComplete} from "primereact/autocomplete";
 
 export interface ShoppingListProps {
     setSelectedProductIds: (ids: number[]) => void;
@@ -27,9 +26,9 @@ const ShoppingList = (props: ShoppingListProps) => {
 
     const [selectedTag, setSelectedTag] = useState<string>();
 
-    const [shoppingListElements, setShoppingListElements] = useState<
-        ShoppingListElementDTO[]
-    >([]);
+    const [shoppingListElements, setShoppingListElements] = useState<ShoppingListElementDTO[]>([]);
+
+    const [stockInfo, setStockInfo] = useState<StockInfoDTO[]>([]);
 
     const navigate = useNavigate();
 
@@ -50,6 +49,11 @@ const ShoppingList = (props: ShoppingListProps) => {
         const productNames = productInfo.map((product) => product.name);
         setProductNames(productNames);
     };
+
+
+    useEffect(() => {
+        fetchProductInfoX();
+    }, [searchedText, selectedTag]);
 
     const onProductAdd = (productInfoDTO: ProductInfoDTO) => {
         if (
@@ -75,7 +79,11 @@ const ShoppingList = (props: ShoppingListProps) => {
         const text = event.query;
         let filteredCountries = productNames.filter(
             (name) => name.toUpperCase().indexOf(text.toUpperCase()) !== -1
-        );
+        )
+
+
+        // wywalić produkty o takiej nazwie, których DTO mają w sobie selectedTag
+
         setFilteredNames(filteredCountries);
         setFilteredTableValue(text);
     };
@@ -124,12 +132,29 @@ const ShoppingList = (props: ShoppingListProps) => {
         },
     ];
 
+
+    const fetchProductInfoX = async () => {
+        if (!searchedText) {
+            return;
+        }
+        const stockInfoDTOS: StockInfoDTO[] = await get(
+            new UriBuilder().all("products").build(),
+            {
+                name: searchedText,
+                tag: selectedTag,
+            }
+        );
+
+        // @ts-ignore
+        setStockInfo(stockInfoDTOS);
+    };
+
     // @ts-ignore
     return (
         <React.Fragment>
             <Row className="main-container" gutter={8}>
-                <Col span={10} style={{ textAlign: "center" }}>
-                    <h2 style={{ marginBottom: "20px" }}>Your products</h2>
+                <Col span={10} style={{textAlign: "center"}}>
+                    <h2 style={{marginBottom: "20px"}}>Your products</h2>
                     <ProductsTable
                         shoppingListElements={shoppingListElements}
                         onDeleteElement={onProductDelete}
@@ -183,8 +208,7 @@ const ShoppingList = (props: ShoppingListProps) => {
             >
                 <Col offset={6} style={{ minWidth: "550px" }}>
                     <ProductsTableDictionary
-                        name={filteredTableValue}
-                        tag={selectedTag}
+                        stockInfo={stockInfo}
                         onProductAdd={onProductAdd}
                     />
                 </Col>

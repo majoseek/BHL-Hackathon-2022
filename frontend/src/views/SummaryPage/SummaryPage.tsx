@@ -1,13 +1,13 @@
 //@ts-nocheck
-import { get } from "../../common/http/HttpRequestService";
-import { useEffect, useState } from "react";
-import { ProductStockInfoDTO } from "./dto/ProductStockInfo.dto";
-import { DataTable, DataTableRowClickEventParams } from "primereact/datatable";
-import { Column } from "primereact/column";
-import { Map, Marker } from "pigeon-maps";
-import { useNavigate } from "react-router-dom";
-import { ShopInfoDTO } from "./dto/ShopInfoDTO";
-import { Slider, SliderChangeParams } from "primereact/slider";
+import {get} from "../../common/http/HttpRequestService";
+import {useEffect, useState} from "react";
+import {ProductStockInfoDTO} from "./dto/ProductStockInfo.dto";
+import {DataTable, DataTableRowClickEventParams} from "primereact/datatable";
+import {Column} from "primereact/column";
+import {Map, Marker} from "pigeon-maps";
+import {useNavigate} from "react-router-dom";
+import {ShopInfoDTO} from "./dto/ShopInfoDTO";
+import {Slider, SliderChangeParams} from "primereact/slider";
 import "./styles.css";
 
 export interface SummaryPageProps {
@@ -161,6 +161,17 @@ export const SummaryPage = (props: SummaryPageProps) => {
                 </div>
                 <div className={"p-col-6"}>
                     {/* @ts-ignore */}
+                    <div className={"p-grid p-d-flex"}>
+                        <div class={"row"}>
+                            <span>Najtaniej</span>
+                        </div>
+                        <div className={"row"}>
+                            <span>Optymalnie</span>
+                        </div>
+                        <div className={"row"}>
+                            <span>Najbliżej</span>
+                        </div>
+                    </div>
                     <Slider
                         min={0}
                         max={1}

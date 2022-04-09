@@ -1,3 +1,5 @@
+import {ProductInfoDTO} from "../../../ShoppingList/table/dto/ProductInfo.dto";
+
 export interface StockInfoDTO {
     id: number;
     name: string;
@@ -5,4 +7,5 @@ export interface StockInfoDTO {
     latitude: number;
     price: number;
     quantity: number;
+    productInfoDTO?: ProductInfoDTO[];
 }
