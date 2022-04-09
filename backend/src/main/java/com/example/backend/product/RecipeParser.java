@@ -43,6 +43,7 @@ public class RecipeParser {
                 .forEach((it) -> {
                     productInfoDTOS.addAll(getAppropriateProducts(splitProductsAndQuantity(it)));
                 });
+        productInfoDTOS.forEach(it -> it.setTags(tagFinder.getTagsByProductId(it.getId())));
         return productInfoDTOS;
     }
 

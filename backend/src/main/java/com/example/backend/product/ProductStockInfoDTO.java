@@ -13,7 +13,7 @@ public class ProductStockInfoDTO {
 
     public ProductStockInfoDTO(ShopInfoDTO shopInfoDTO, double distance, Set<StockInfo> availableProducts, Double optimalParamValue, Integer unavailableProducts) {
         this.shopInfoDTO = shopInfoDTO;
-        this.distance = Math.round(distance * 100.0) / 100.0;
+        this.distance = Math.round(distance / 10.0) / 100.0;
         this.availableProducts = availableProducts;
         this.optimalParamValue = optimalParamValue;
         this.unavailableProducts = unavailableProducts;
