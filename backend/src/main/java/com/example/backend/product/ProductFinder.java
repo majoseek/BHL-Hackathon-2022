@@ -69,11 +69,6 @@ public class ProductFinder {
         return productStockInfoDTOS;
     }
 
-
-    List<ProductInfoDTO> getProductsByTag(String providedTag) {
-        return new JPAQuery<>(entityManager).from(product).join(product.tags, tag).leftJoin(product.availableProducts, availableProduct).select(constructor(ProductInfoDTO.class, product.id, product.name, product.EANCode, product.manufacturer, product.grammage, product.imgURL, availableProduct.priceInGr.avg().intValue())).groupBy(product.id, product.name, product.EANCode, product.manufacturer, product.grammage, product.imgURL).fetch();
-    }
-
     List<ProductInfoDTO> getProductsByName(String providedName) {
         return new JPAQuery<>(entityManager).from(product).where(product.name.like("%" + providedName + "%")).leftJoin(product.availableProducts, availableProduct).select(constructor(ProductInfoDTO.class, product.id, product.name, product.EANCode, product.manufacturer, product.grammage, product.imgURL, availableProduct.priceInGr.avg().intValue())).groupBy(product.id, product.name, product.EANCode, product.manufacturer, product.grammage, product.imgURL).fetch();
     }
@@ -112,7 +107,7 @@ public class ProductFinder {
         if (tag.isEmpty()) {
             productsByTag = getProducts();
         } else {
-            productsByTag = getProductsByTag(tag.get());
+            productsByTag = tagFinder.getProductsByTag(tag.get());
 
         }
         List<ProductInfoDTO> products = productsByName.stream()
