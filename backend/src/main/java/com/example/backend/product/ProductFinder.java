@@ -26,7 +26,7 @@ import static com.querydsl.core.types.Projections.constructor;
 
 @Service
 public class ProductFinder {
-    private final Double MAX_DISTANCE = 50 * 1000D;
+    private final Double MAX_DISTANCE = 100 * 1000D;
 
     @PersistenceContext
     private EntityManager entityManager;
