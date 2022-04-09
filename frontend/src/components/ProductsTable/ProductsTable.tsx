@@ -4,7 +4,6 @@ import { ShoppingListElementDTO } from "../../views/ShoppingList/table/dto/Shopp
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
 import { Button } from "primereact/button";
-import React from "react";
 
 export interface ProductsTableProps {
     shoppingListElements: ShoppingListElementDTO[];
