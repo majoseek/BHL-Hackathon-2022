@@ -72,9 +72,10 @@ public class ProductFinder {
         shopsWithProducts.forEach((shopId, productInfoDTOS) -> {
             ShopInfoDTO shopInfo = shopFinder.getShopInfoById(shopId);
             double distanceInMeters = DistanceService.getDistance(userLatitude, userLongtitude, shopInfo.latitude(), shopInfo.longitude());
-            if (distanceInMeters < MAX_DISTANCE) {
-                productStockInfoDTOS.add(new ProductStockInfoDTO(shopInfo, distanceInMeters, productInfoDTOS));
-            }
+//            FIXME Uncomment this after fixes
+//            if (distanceInMeters < MAX_DISTANCE) {
+            productStockInfoDTOS.add(new ProductStockInfoDTO(shopInfo, distanceInMeters, productInfoDTOS));
+//            }
         });
         return productStockInfoDTOS;
     }

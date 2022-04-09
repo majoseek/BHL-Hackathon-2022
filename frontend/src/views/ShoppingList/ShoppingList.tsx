@@ -11,6 +11,7 @@ import {StockInfoDTO} from "./table/dto/StockInfo.dto";
 import {Button} from "primereact/button";
 import {ShoppingListElementDTO} from "./table/dto/ShoppingListElementDTO";
 import {ProductInfoDTO} from "./table/dto/ProductInfo.dto";
+import {useNavigate} from "react-router-dom";
 
 const options = [
     {value: "Szynka konserwowa"},
@@ -21,12 +22,23 @@ const options = [
     {value: "Wołowina"},
 ];
 
-const ShoppingList = () => {
+export interface ShoppingListProps {
+    setSelectedProductIds: (ids: number[]) => void;
+}
+
+const ShoppingList = (props: ShoppingListProps) => {
     const [productNames, setProductNames] = useState<any[]>([]);
     const [searchedText, setSearchedText] = useState<string>("");
     const [filteredTableValue, setFilteredTableValue] = useState<string>()
 
     const [shoppingListElements, setShoppingListElements] = useState<ShoppingListElementDTO[]>([])
+
+    const navigate = useNavigate();
+
+    const onRedirect = () => {
+        props.setSelectedProductIds(shoppingListElements.map(product => product.productId));
+        navigate('/map')
+    }
 
     useEffect(() => {
         fetchProductInfo()
@@ -60,25 +72,6 @@ const ShoppingList = () => {
         );
     }
 
-    var options = {
-        enableHighAccuracy: true,
-        timeout: 5000,
-        maximumAge: 0
-    };
-
-    const onProceed = () => {
-        navigator.geolocation.getCurrentPosition(async (position: GeolocationPosition) => {
-            console.log(position);
-            const data = await get("/products/stockInfo",
-                {
-                    userLatitude: position.coords.latitude,
-                    userLongitude: position.coords.longitude,
-                    productIds: shoppingListElements.map(product => product.productId).join(",")
-                });
-        }, () => {
-        }, options);
-    }
-
     // @ts-ignore
     return (
         <React.Fragment>
@@ -89,7 +82,7 @@ const ShoppingList = () => {
                         shoppingListElements={shoppingListElements}
                         onDeleteElement={onProductDelete}
                     />
-                    <Button label="Proceed" onClick={onProceed}/>
+                    <Button label="Proceed" onClick={onRedirect}/>
                 </Col>
                 <Col span={16}>
                     <h2>Most common categories</h2>
