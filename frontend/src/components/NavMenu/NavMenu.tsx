@@ -1,13 +1,30 @@
-import {Button} from "primereact/button";
-import React from "react";
-
-const ButtonDemo = () => {
+//@ts-nocheck
+import { useState } from "react";
+import { Sidebar } from "primereact/sidebar";
+import { Button } from "primereact/button";
+import LogoName from "./logo_name.png";
+import "./styles.css";
+const NavMenu = () => {
+    const [visibleTop, setVisibleTop] = useState(false);
     return (
-        <div className="button-demo">
+        <div>
             <div className="card">
-                <Button/>
+                <Sidebar
+                    visible={visibleTop}
+                    position="top"
+                    onHide={() => setVisibleTop(false)}
+                >
+                    <h3>Top Sidebar</h3>
+                </Sidebar>
+
+                <img src={LogoName} alt="Logo" />
+                <Button
+                    icon="pi pi-arrow-down"
+                    onClick={() => setVisibleTop(true)}
+                    className="mr-2 sidebar-icon"
+                />
             </div>
         </div>
     );
-}
-export default ButtonDemo;
+};
+export default NavMenu;

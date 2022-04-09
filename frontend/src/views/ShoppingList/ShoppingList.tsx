@@ -1,3 +1,4 @@
+//@ts-nocheck
 import React, {useEffect, useState} from "react";
 import ProductsTable from "../../components/ProductsTable";
 import {AutoComplete, Col, Input, Row} from "antd";

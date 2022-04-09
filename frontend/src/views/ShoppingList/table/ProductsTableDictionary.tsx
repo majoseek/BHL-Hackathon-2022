@@ -1,11 +1,12 @@
-import React, {useEffect, useState} from 'react';
-import {DataTable} from 'primereact/datatable';
-import {Column} from 'primereact/column';
-import {get} from "../../../common/http/HttpRequestService";
-import {UriBuilder} from "../../../common/http/UriBuilder";
-import {StockInfoDTO} from "./dto/StockInfo.dto";
-import {Button} from "primereact/button";
-import {ProductInfoDTO} from "./dto/ProductInfo.dto";
+// @ts-nocheck
+import React, { useEffect, useState } from "react";
+import { DataTable } from "primereact/datatable";
+import { Column } from "primereact/column";
+import { get } from "../../../common/http/HttpRequestService";
+import { UriBuilder } from "../../../common/http/UriBuilder";
+import { StockInfoDTO } from "./dto/StockInfo.dto";
+import { Button } from "primereact/button";
+import { ProductInfoDTO } from "./dto/ProductInfo.dto";
 
 interface ProductsTableProps {
     name?: string;
@@ -16,40 +17,45 @@ export const ProductsTableDictionary = (props: ProductsTableProps) => {
     const [stockInfo, setStockInfo] = useState<StockInfoDTO[]>([]);
 
     useEffect(() => {
-        fetchProductInfo()
-    }, [props.name])
-
+        fetchProductInfo();
+    }, [props.name]);
 
     const fetchProductInfo = async () => {
         if (!props.name) {
             return;
         }
         const productInfo = await get(
-            new UriBuilder()
-                .all("products")
-                .build(),
+            new UriBuilder().all("products").build(),
             {
-                name: props.name
+                name: props.name,
             }
         );
 
         // @ts-ignore
         setStockInfo(productInfo);
         console.log(productInfo);
-    }
-
+    };
 
     const actionBodyTemplate = (productInfo: ProductInfoDTO) => {
-        return <Button type="button" icon="pi pi-plus" onClick={() => props.onProductAdd(productInfo)}/>;
-    }
+        return (
+            <Button
+                type="button"
+                icon="pi pi-plus"
+                onClick={() => props.onProductAdd(productInfo)}
+            />
+        );
+    };
 
     return (
         <div className="datatable-doc-demo">
             <DataTable value={stockInfo} responsiveLayout="scroll">
                 <Column field="name" header="Name"></Column>
-                <Column field="averagePrice" header="Average price"/>
-                <Column headerStyle={{width: '4rem', textAlign: 'center'}}
-                        bodyStyle={{textAlign: 'center', overflow: 'visible'}} body={actionBodyTemplate}/>
+                <Column field="averagePrice" header="Average price" />
+                <Column
+                    headerStyle={{ width: "4rem", textAlign: "center" }}
+                    bodyStyle={{ textAlign: "center", overflow: "visible" }}
+                    body={actionBodyTemplate}
+                />
 
                 {/*<Column field="name" header="Name"></Column>*/}
                 {/*<Column field="category" header="Category"></Column>*/}
@@ -85,4 +91,4 @@ export const ProductsTableDictionary = (props: ProductsTableProps) => {
             {/*</div>*/}
         </div>
     );
-}
+};
