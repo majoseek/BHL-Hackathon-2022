@@ -5,9 +5,11 @@ import {get} from "../../../common/http/HttpRequestService";
 import {UriBuilder} from "../../../common/http/UriBuilder";
 import {StockInfoDTO} from "./dto/StockInfo.dto";
 import {Button} from "primereact/button";
+import {ProductInfoDTO} from "./dto/ProductInfo.dto";
 
 interface ProductsTableProps {
     name?: string;
+    onProductAdd: (productInfoDTO: ProductInfoDTO) => void;
 }
 
 export const ProductsTableDictionary = (props: ProductsTableProps) => {
@@ -36,25 +38,16 @@ export const ProductsTableDictionary = (props: ProductsTableProps) => {
         console.log(productInfo);
     }
 
-    // @ts-ignore
-    const average = arr => arr.reduce((p, c) => p + c, 0) / arr.length;
 
-    const avgStockPrice = (productInfo: StockInfoDTO) => {
-        if (!productInfo?.stockAvailability) {
-            return "";
-        }
-        return average(productInfo?.stockAvailability.map(info => info?.price))
-    }
-
-    const actionBodyTemplate = () => {
-        return <Button type="button" icon="pi pi-plus"/>;
+    const actionBodyTemplate = (productInfo: ProductInfoDTO) => {
+        return <Button type="button" icon="pi pi-plus" onClick={() => props.onProductAdd(productInfo)}/>;
     }
 
     return (
         <div className="datatable-doc-demo">
             <DataTable value={stockInfo} responsiveLayout="scroll">
                 <Column field="name" header="Name"></Column>
-                <Column field="" header="Average price" body={avgStockPrice}/>
+                <Column field="averagePrice" header="Average price"/>
                 <Column headerStyle={{width: '4rem', textAlign: 'center'}}
                         bodyStyle={{textAlign: 'center', overflow: 'visible'}} body={actionBodyTemplate}/>
 
